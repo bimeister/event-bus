@@ -1,0 +1,8 @@
+/.*/
+!/.gitlab/
+/dist/
+/docs/
+/deploy/
+/node_modules/
+*.log
+temp*/
