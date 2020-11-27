@@ -1,3 +1,5 @@
 export enum Scope {
-  Auth = 'Auth'
+  Auth = 'Auth',
+  Project = 'Project',
+  Testing = 'Testing'
 }

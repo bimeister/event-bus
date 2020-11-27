@@ -14,7 +14,7 @@ export class EventBus {
   public catchEvents(): Observable<BusEventBase>;
   public catchEvents(predicate: CatchPredicate<BusEventBase>): Observable<BusEventBase>;
   public catchEvents(predicate?: CatchPredicate<BusEventBase>): Observable<BusEventBase> {
-    if (isNil(predicate)) {
+    if (isNil(predicate) || typeof predicate !== 'function') {
       return this.currentEvent$;
     }
     return this.currentEvent$.pipe(filter((event: BusEventBase) => predicate(event)));
@@ -24,7 +24,7 @@ export class EventBus {
   public catchErrors(): Observable<BusErrorEventBase>;
   public catchErrors(predicate: CatchPredicate<BusErrorEventBase>): Observable<BusErrorEventBase>;
   public catchErrors(predicate?: CatchPredicate<BusErrorEventBase>): Observable<BusErrorEventBase> {
-    if (isNil(predicate)) {
+    if (isNil(predicate) || typeof predicate !== 'function') {
       return this.currentError$;
     }
     return this.currentError$.pipe(filter((event: BusErrorEventBase) => predicate(event)));
@@ -47,13 +47,13 @@ export class EventBus {
       return;
     }
 
+    if (EventBus.isError(input)) {
+      this.currentError$.next(input);
+    }
+
     if (EventBus.isEvent(input)) {
       this.currentEvent$.next(input);
       return;
-    }
-
-    if (EventBus.isError(input)) {
-      this.currentError$.next(input);
     }
   }
 

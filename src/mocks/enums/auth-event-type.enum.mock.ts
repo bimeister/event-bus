@@ -3,5 +3,6 @@ export enum AuthEventType {
   LogInSuccess = 'LogInSuccess',
   LogInFail = 'LogInFail',
   LogOut = 'LogOut',
-  LogOutSuccess = 'LogOutSuccess'
+  LogOutSuccess = 'LogOutSuccess',
+  AuthError = 'AuthError'
 }

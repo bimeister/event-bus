@@ -3,6 +3,7 @@
 /dist/
 /docs/
 /deploy/
+/coverage/
 /node_modules/
 *.log
 temp*/

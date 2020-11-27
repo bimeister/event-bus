@@ -1,1 +1,3 @@
-export type CatchPredicate<T> = (event: T) => boolean;
+import { DispatchInputBase } from './../internal/classes/dispatch-input-base.abstract';
+
+export type CatchPredicate<T = any> = (event: DispatchInputBase<T>) => boolean;

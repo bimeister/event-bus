@@ -12,7 +12,7 @@
     "lint:debug": "tslint --format prose --project tsconfig.json --fix",
     "lint:inspect": "tslint --format stylish --project tsconfig.json && yarn run cspell:check",
     "lint:codestyle": "yarn run prettier:check",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watch",
     "test:ci": "yarn run test",
     "prettier:check": "prettier --config ./.prettierrc --ignore-path ./.prettierignore --check \"./**/*.{json,js,ts}\"",
