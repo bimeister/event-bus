@@ -1,44 +1,33 @@
 {
   "name": "@bimeister/event-bus",
   "version": "0.1.0",
-  "main": "dist/index.js",
   "license": "SEE LICENSE IN LICENSE",
   "description": "BIMeister frontend event-bus",
   "scripts": {
+    "build-cli": "build-cli",
     "barrel": "barrelsby --config=\"./barrelsby.json\" --directory=\"./src/lib\"",
-    "build": "yarn barrel && gulp build:clean-up && tsc --project tsconfig.lib.json",
-    "build:ci": "yarn build && gulp deploy:prepare",
+    "compile:lib-esm2015": "tsc --project tsconfig.lib-esm2015.json",
+    "compile:lib-umd": "tsc --project tsconfig.lib-umd.json",
+    "compile:lib-typings": "tsc --project tsconfig.lib-typings.json",
+    "build": "yarn barrel && gulp build:compile-all",
+    "build:ci": "yarn barrel && gulp build:clean-up && gulp build:compile-all",
+    "build:docs": "yarn barrel && typedoc --options typedoc.json  --tsconfig tsconfig.docs.json --includeDeclarations --exclude \"**/*+(index|api|.spec|.e2e).ts\" --excludeNotExported --excludePrivate --excludeProtected --excludeExternals --stripInternal",
     "autofix": "yarn run lint:debug && yarn run prettier:format && yarn run lint:inspect",
     "lint:debug": "tslint --format prose --project tsconfig.json --fix",
     "lint:inspect": "tslint --format stylish --project tsconfig.json && yarn run cspell:check",
     "lint:codestyle": "yarn run prettier:check",
-    "test": "jest --coverage",
-    "test:watch": "jest --watch",
-    "test:ci": "yarn run test",
+    "test": "yarn run test:watch",
+    "test:watch": "jest --config ./jest.config.ts --watch true",
+    "test:ci": "yarn run jest --config ./jest.config.ci.ts",
     "prettier:check": "prettier --config ./.prettierrc --ignore-path ./.prettierignore --check \"./**/*.{json,js,ts}\"",
     "prettier:format": "prettier --loglevel log --config ./.prettierrc --ignore-path ./.prettierignore --write \"./**/*.{json,js,ts}\"",
     "cspell:check": "cspell \"src/**/*.*\" --config=\"cspell.json\""
   },
   "dependencies": {
-    "fancy-log": "^1.3.3",
-    "snake-case": "^3.0.3",
-    "uuid": "^8.3.0"
-  },
-  "peerDependencies": {
-    "rxjs": "^6.6.0",
-    "@meistersoft/utilities": "^0.1.0-2a11c7a7"
-  },
-  "optionalDependencies": {
-    "@angular/core": "^10.0.0",
-    "@angular/common": "^10.0.0",
-    "@ngxs/store": "^3.6.2"
+    "@bimeister/utilities": "^0.1.0-0041ff8d",
+    "rxjs": "^6.6.0"
   },
   "devDependencies": {
-    "@meistersoft/utilities": "^0.1.0-2a11c7a7",
-    "@ngxs/store": "^3.6.2",
-    "@angular/core": "^10.0.0",
-    "@angular/common": "^10.0.0",
-    "@types/fancy-log": "^1.3.1",
     "@types/gulp": "^4.0.6",
     "@types/jest": "^26.0.4",
     "@types/node": "^14.0.23",

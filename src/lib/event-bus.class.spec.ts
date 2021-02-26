@@ -1,4 +1,4 @@
-import { getShuffledArray } from '@meistersoft/utilities';
+import { getShuffledArray } from '@bimeister/utilities';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isSameEventsSequence } from '../internal/functions/is-same-events-sequence.function';
@@ -76,11 +76,11 @@ describe('event-bus.class.ts', () => {
   });
 
   it('should handle dispatched events in valid sequence', (doneCallback: jest.DoneCallback) => {
-    const catchedEvents$: Observable<BusEventBase> = eventBus.catchAll();
-    catchedEvents$
+    const caughtEvents$: Observable<BusEventBase> = eventBus.catchAll();
+    caughtEvents$
       .pipe(
         mapToEventsSlice(),
-        map((catchedEvents: BusEventBase[]) => isSameEventsSequence(catchedEvents, regularEvents))
+        map((caughtEvents: BusEventBase[]) => isSameEventsSequence(caughtEvents, regularEvents))
       )
       .subscribe((sequenceIsValid: boolean) => {
         expect(sequenceIsValid).toBeTruthy();
@@ -95,11 +95,11 @@ describe('event-bus.class.ts', () => {
   it('should ignore invalid dispatch input', (doneCallback: jest.DoneCallback) => {
     const validEvents: BusEventBase[] = [new LeadingMarkerEventMock(), new TrailingMarkerEventMock()];
 
-    const catchedEvents$: Observable<BusEventBase> = eventBus.catchAll();
-    catchedEvents$
+    const caughtEvents$: Observable<BusEventBase> = eventBus.catchAll();
+    caughtEvents$
       .pipe(
         mapToEventsSlice(),
-        map((catchedEvents: BusEventBase[]) => isSameEventsSequence(catchedEvents, validEvents))
+        map((caughtEvents: BusEventBase[]) => isSameEventsSequence(caughtEvents, validEvents))
       )
       .subscribe((sequenceIsValid: boolean) => {
         expect(sequenceIsValid).toBeTruthy();
@@ -112,11 +112,11 @@ describe('event-bus.class.ts', () => {
   }, 10_000);
 
   it('should emit only error events from EventBus.catchErrors', (doneCallback: jest.DoneCallback) => {
-    const catchedErrors$: Observable<BusErrorEventBase> = eventBus.catchErrors();
-    catchedErrors$
+    const caughtErrors$: Observable<BusErrorEventBase> = eventBus.catchErrors();
+    caughtErrors$
       .pipe(
         mapToEventsSlice(),
-        map((catchedErrors: BusErrorEventBase[]) => isSameEventsSequence(catchedErrors, filteredErrorEvents))
+        map((caughtErrors: BusErrorEventBase[]) => isSameEventsSequence(caughtErrors, filteredErrorEvents))
       )
       .subscribe((sequenceIsValid: boolean) => {
         expect(sequenceIsValid).toBeTruthy();
@@ -129,11 +129,11 @@ describe('event-bus.class.ts', () => {
   }, 10_000);
 
   it('should emit only regular events from EventBus.catchEvents', (doneCallback: jest.DoneCallback) => {
-    const catchedEvents$: Observable<BusEventBase> = eventBus.catchEvents();
-    catchedEvents$
+    const caughtEvents$: Observable<BusEventBase> = eventBus.catchEvents();
+    caughtEvents$
       .pipe(
         mapToEventsSlice(),
-        map((catchedEvents: BusEventBase[]) => isSameEventsSequence(catchedEvents, filteredRegularEvents))
+        map((caughtEvents: BusEventBase[]) => isSameEventsSequence(caughtEvents, filteredRegularEvents))
       )
       .subscribe((sequenceIsValid: boolean) => {
         expect(sequenceIsValid).toBeTruthy();
@@ -156,11 +156,11 @@ describe('event-bus.class.ts', () => {
 
     const expectedResult: BusEventBase[] = filteredRegularEvents.filter(predicate);
 
-    const catchedEvents$: Observable<BusEventBase> = eventBus.catchEvents(predicate);
-    catchedEvents$
+    const caughtEvents$: Observable<BusEventBase> = eventBus.catchEvents(predicate);
+    caughtEvents$
       .pipe(
         mapToEventsSlice(),
-        map((catchedEvents: BusEventBase[]) => isSameEventsSequence(catchedEvents, expectedResult))
+        map((caughtEvents: BusEventBase[]) => isSameEventsSequence(caughtEvents, expectedResult))
       )
       .subscribe((sequenceIsValid: boolean) => {
         expect(sequenceIsValid).toBeTruthy();
@@ -183,11 +183,11 @@ describe('event-bus.class.ts', () => {
 
     const expectedErrorEvents: BusEventBase[] = filteredErrorEvents.filter(errorEventPredicate);
 
-    const catchedErrors$: Observable<BusEventBase> = eventBus.catchErrors(errorEventPredicate);
-    catchedErrors$
+    const caughtErrors$: Observable<BusEventBase> = eventBus.catchErrors(errorEventPredicate);
+    caughtErrors$
       .pipe(
         mapToEventsSlice(),
-        map((catchedEvents: BusEventBase[]) => isSameEventsSequence(catchedEvents, expectedErrorEvents))
+        map((caughtEvents: BusEventBase[]) => isSameEventsSequence(caughtEvents, expectedErrorEvents))
       )
       .subscribe((sequenceIsValid: boolean) => {
         expect(sequenceIsValid).toBeTruthy();

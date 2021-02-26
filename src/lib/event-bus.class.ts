@@ -1,10 +1,10 @@
-import { isNil } from '@meistersoft/utilities';
+import { isNil } from '@bimeister/utilities';
 import { merge, Observable, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { DispatchInputBase } from './../internal/classes/dispatch-input-base.abstract';
+import type { DispatchInputBase } from './../internal/classes/dispatch-input-base.abstract';
 import { BusErrorEventBase } from './bus-error-event-base.abstract';
 import { BusEventBase } from './bus-event-base.abstract';
-import { CatchPredicate } from './catch-predicate.type';
+import type { CatchPredicate } from './catch-predicate.type';
 
 export class EventBus {
   private readonly currentEvent$: Subject<BusEventBase> = new Subject<BusEventBase>();

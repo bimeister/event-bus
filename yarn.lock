@@ -2,20 +2,6 @@
 # yarn lockfile v1
 
 
-"@angular/common@^10.0.0":
-  version "10.2.3"
-  resolved "http://npm.bimeister.com:4873/@angular%2fcommon/-/common-10.2.3.tgz#ce3a6ad59ed4ec182ce4a3adbfbbb950ce4b23af"
-  integrity sha512-xKKN8bgdudktVC/gwUtdeS2khYqSENWQe1CS8nE0V88qKCftwPhCD5Ovp6+6LflqvQhJWb0guf7HXjq9oBqO2w==
-  dependencies:
-    tslib "^2.0.0"
-
-"@angular/core@^10.0.0":
-  version "10.2.3"
-  resolved "http://npm.bimeister.com:4873/@angular%2fcore/-/core-10.2.3.tgz#89469c537b304532d6aa8dbb2ea4e1e2ed90e7a6"
-  integrity sha512-mE6nLpul/IJllk0VYrlrP69n0P7JPz+BHYAVobwO5+0EGO65ieTD18DxzfEt4eQgthnM3VQwSZxjW4n9Y1p/dQ==
-  dependencies:
-    tslib "^2.0.0"
-
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4":
   version "7.10.4"
   resolved "http://npm.bimeister.com:4873/@babel%2fcode-frame/-/code-frame-7.10.4.tgz#168da1a36e90da68ae8d49c0f1b48c7c6249213a"
@@ -285,6 +271,15 @@
   resolved "http://npm.bimeister.com:4873/@bcoe%2fv8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@bimeister/utilities@^0.1.0-0041ff8d":
+  version "0.1.0-0041ff8d"
+  resolved "https://git.bimeister.com/api/v4/projects/98/packages/npm/@bimeister/utilities/-/@bimeister/utilities-0.1.0-0041ff8d.tgz#0a5fc14ce89f1203dd395904985d066e9e01b6c6"
+  integrity sha1-Cl/BTOifEgPdOVkEmF0Gbp4BtsY=
+  dependencies:
+    fancy-log "^1.3.3"
+    snake-case "^3.0.3"
+    uuid "^8.3.0"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "http://npm.bimeister.com:4873/@cnakazawa%2fwatch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -480,26 +475,6 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@meistersoft/utilities@^0.1.0-2a11c7a7":
-  version "0.1.0-2a11c7a7"
-  resolved "http://npm.bimeister.com:4873/@meistersoft%2futilities/-/utilities-0.1.0-2a11c7a7.tgz#d257d9638eb198b598568d987079d89322c2255b"
-  integrity sha512-6/PgE0h7t8qQOUxwYsOEy7v2g+ESb2GPVaIaTsUwE8F4ZU1gCzHc5Sl+Fk2nScq3vleQ2iqthr9BJUQuGb58jg==
-  dependencies:
-    fancy-log "^1.3.3"
-    snake-case "^3.0.3"
-    uuid "^8.3.0"
-  optionalDependencies:
-    "@angular/core" "^10.0.0"
-    "@ngxs/store" "^3.6.2"
-    rxjs "^6.6.0"
-
-"@ngxs/store@^3.6.2":
-  version "3.7.1"
-  resolved "http://npm.bimeister.com:4873/@ngxs%2fstore/-/store-3.7.1.tgz#3333379eb36cfe475d019b6c894b263ea515b8a5"
-  integrity sha512-Qg4rkF8XoIg/E2SGUfBbr4JmR8ZbRfeg1X++fF0HJymK1PtbIxtEXQXm7VTH0+GSmYDCwPJb8Im9dZHGZWF5ww==
-  dependencies:
-    tslib "^1.9.0"
-
 "@sinonjs/commons@^1.7.0":
   version "1.8.1"
   resolved "http://npm.bimeister.com:4873/@sinonjs%2fcommons/-/commons-1.8.1.tgz#e7df00f98a203324f6dc7cc606cad9d4a8ab2217"
@@ -551,11 +526,6 @@
   version "1.20.4"
   resolved "http://npm.bimeister.com:4873/@types%2fexpect/-/expect-1.20.4.tgz#8288e51737bf7e3ab5d7c77bfa695883745264e5"
   integrity sha512-Q5Vn3yjTDyCMV50TB6VRIbQNxSE4OmZR86VSbGaNpfUolm0iePBB4KdEEHmxoY5sT2+2DIvXW0rvMDP2nHZ4Mg==
-
-"@types/fancy-log@^1.3.1":
-  version "1.3.1"
-  resolved "http://npm.bimeister.com:4873/@types%2ffancy-log/-/fancy-log-1.3.1.tgz#dd94fbc8c2e2ab8ab402ca8d04bb8c34965f0696"
-  integrity sha512-31Dt9JaGfHretvwVxCBrCFL5iC9MQ3zOXpu+8C4qzW0cxc5rJJVGxB5c/vZ+wmeTk/JjPz/D0gv8BZ+Ip6iCqQ==
 
 "@types/glob-stream@*":
   version "6.1.0"
@@ -5224,11 +5194,6 @@ tslib@^1.10.0, tslib@^1.13.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.14.1"
   resolved "http://npm.bimeister.com:4873/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
-
-tslib@^2.0.0:
-  version "2.0.3"
-  resolved "http://npm.bimeister.com:4873/tslib/-/tslib-2.0.3.tgz#8e0741ac45fc0c226e58a17bfc3e64b9bc6ca61c"
-  integrity sha512-uZtkfKblCEQtZKBF6EBXVZeQNl82yqtDQdv+eck8u7tdPxjLu2/lp5/uPW+um2tpuxINHWy3GhiccY7QgEaVHQ==
 
 tslint@^6.1.2:
   version "6.1.3"

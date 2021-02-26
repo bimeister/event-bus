@@ -1,7 +1,7 @@
 {
   "defaultSeverity": "error",
   "linterOptions": {
-    "exclude": ["node_modules", "dist", "src/**/api.ts", "src/index.ts"]
+    "exclude": ["node_modules", "dist", "src/**/api.ts", "src/*.ts", "jest.config.*"]
   },
   "rules": {
     "array-type": [true, "array"],
@@ -131,7 +131,7 @@
         "variable-declaration": "nospace"
       }
     ],
-    "unified-signatures": false,
+    "unified-signatures": true,
     "use-isnan": true,
     "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
     "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-separator", "check-type"]

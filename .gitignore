@@ -1,9 +1,10 @@
 /.*/
 !/.gitlab/
-/dist/
+/.vscode/
+/coverage/
 /docs/
 /deploy/
-/coverage/
+/dist/
 /node_modules/
 *.log
-temp*/
+/src/**/api.ts

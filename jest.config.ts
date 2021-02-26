@@ -1,4 +1,7 @@
-module.exports = {
+import type { Config } from '@jest/types';
+
+const config: Config.InitialOptions = {
+  verbose: true,
   roots: ['<rootDir>/src'],
   transform: {
     '^.+\\.ts$': 'ts-jest'
@@ -7,7 +10,8 @@ module.exports = {
   moduleFileExtensions: ['ts', 'js', 'json'],
   globals: {
     'ts-jest': {
-      tsConfig: 'tsconfig.spec.json'
+      tsconfig: 'tsconfig.spec.json'
     }
   }
 };
+export default config;
