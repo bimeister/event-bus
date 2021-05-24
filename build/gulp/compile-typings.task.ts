@@ -1,4 +1,4 @@
-import { executeCommandWithLogging } from '@bimeister/utilities/commonjs/common';
+import { executeCommandWithLogging } from '@bimeister/utilities';
 import type { TaskFunction } from 'gulp';
 
 export function compileTypings(): TaskFunction {

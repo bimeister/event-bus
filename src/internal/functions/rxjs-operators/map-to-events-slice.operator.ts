@@ -5,44 +5,46 @@ import { TrailingMarkerEventMock } from '../../../mocks/events/trailing-marker.e
 import { LeadingMarkerErrorEventMock } from './../../../mocks/events/leading-marker-error.event.mock';
 import { TrailingMarkerErrorEventMock } from './../../../mocks/events/trailing-marker-error.event.mock';
 
-export const mapToEventsSlice = <T>(): OperatorFunction<T, T[]> => (source: Observable<T>): Observable<T[]> => {
-  type Marker = 'leading' | 'trailing' | null;
+export const mapToEventsSlice =
+  <T>(): OperatorFunction<T, T[]> =>
+  (source: Observable<T>): Observable<T[]> => {
+    type Marker = 'leading' | 'trailing' | null;
 
-  let isLeadingMarkerTriggered: boolean = false;
-  let isTrailingMarkerTriggered: boolean = false;
+    let isLeadingMarkerTriggered: boolean = false;
+    let isTrailingMarkerTriggered: boolean = false;
 
-  const onSliceReady$: Subject<void> = new Subject<void>();
+    const onSliceReady$: Subject<void> = new Subject<void>();
 
-  return source.pipe(
-    map((input: T): [Marker, T] => {
-      if (input instanceof LeadingMarkerEventMock || input instanceof LeadingMarkerErrorEventMock) {
-        return ['leading', input];
-      }
+    return source.pipe(
+      map((input: T): [Marker, T] => {
+        if (input instanceof LeadingMarkerEventMock || input instanceof LeadingMarkerErrorEventMock) {
+          return ['leading', input];
+        }
 
-      if (input instanceof TrailingMarkerEventMock || input instanceof TrailingMarkerErrorEventMock) {
-        return ['trailing', input];
-      }
+        if (input instanceof TrailingMarkerEventMock || input instanceof TrailingMarkerErrorEventMock) {
+          return ['trailing', input];
+        }
 
-      return [null, input];
-    }),
-    tap(([marker, _input]: [Marker, T]) => {
-      if (marker === 'leading') {
-        isLeadingMarkerTriggered = true;
-      }
+        return [null, input];
+      }),
+      tap(([marker, _input]: [Marker, T]) => {
+        if (marker === 'leading') {
+          isLeadingMarkerTriggered = true;
+        }
 
-      if (marker === 'trailing') {
-        isTrailingMarkerTriggered = true;
-      }
+        if (marker === 'trailing') {
+          isTrailingMarkerTriggered = true;
+        }
 
-      if (isLeadingMarkerTriggered && isTrailingMarkerTriggered) {
-        onSliceReady$.next();
-      }
-    }),
-    filter(([marker, _input]: [Marker, T]) => {
-      return marker === null && isLeadingMarkerTriggered && !isTrailingMarkerTriggered;
-    }),
-    map(([_marker, input]: [Marker, T]) => input),
-    buffer(onSliceReady$),
-    take(1)
-  );
-};
+        if (isLeadingMarkerTriggered && isTrailingMarkerTriggered) {
+          onSliceReady$.next();
+        }
+      }),
+      filter(([marker, _input]: [Marker, T]) => {
+        return marker === null && isLeadingMarkerTriggered && !isTrailingMarkerTriggered;
+      }),
+      map(([_marker, input]: [Marker, T]) => input),
+      buffer(onSliceReady$),
+      take(1)
+    );
+  };

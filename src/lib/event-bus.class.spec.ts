@@ -1,9 +1,9 @@
 import { getShuffledArray } from '@bimeister/utilities';
-import { Observable } from 'rxjs';
+import type { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isSameEventsSequence } from '../internal/functions/is-same-events-sequence.function';
 import { mapToEventsSlice } from '../internal/functions/rxjs-operators/map-to-events-slice.operator';
-import { DispatchInputBase } from './../internal/classes/dispatch-input-base.abstract';
+import type { DispatchInputBase } from './../internal/classes/dispatch-input-base.abstract';
 import { VOID } from './../internal/constants/void.const';
 import { AuthEventType } from './../mocks/enums/auth-event-type.enum.mock';
 import { ProjectEventType } from './../mocks/enums/project-event-type.enum.mock';
@@ -21,7 +21,7 @@ import { UserLogOutSuccessEventMock } from './../mocks/events/user-log-out-succe
 import { UserLogOutEventMock } from './../mocks/events/user-log-out.event.mock';
 import { BusErrorEventBase } from './bus-error-event-base.abstract';
 import { BusEventBase } from './bus-event-base.abstract';
-import { CatchPredicate } from './catch-predicate.type';
+import type { CatchPredicate } from './catch-predicate.type';
 import { EventBus } from './event-bus.class';
 
 describe('event-bus.class.ts', () => {
