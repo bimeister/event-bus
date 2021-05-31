@@ -1,6 +1,6 @@
 import { isNil } from '@bimeister/utilities';
-import { asyncScheduler, merge, Observable, Subject } from 'rxjs';
-import { filter, observeOn, subscribeOn } from 'rxjs/operators';
+import { asyncScheduler, merge, Observable, of, Subject, timer } from 'rxjs';
+import { filter, observeOn, subscribeOn, take } from 'rxjs/operators';
 import type { DispatchInputBase } from './../internal/classes/dispatch-input-base.abstract';
 import { BusErrorEventBase } from './bus-error-event-base.abstract';
 import { BusEventBase } from './bus-event-base.abstract';
@@ -35,34 +35,40 @@ export class EventBus {
 
   public catchAll<T>(): Observable<DispatchInputBase<T>>;
   public catchAll(): Observable<DispatchInputBase> {
-    return merge(this.currentEvent$, this.currentError$);
+    return merge(this.currentEvent$, this.currentError$).pipe(observeOn(asyncScheduler), subscribeOn(asyncScheduler));
   }
 
   public dispatch<T>(event: BusEventBase<T> | BusErrorEventBase<T>): void;
   public dispatch(event: BusEventBase | BusEventBase[] | BusErrorEventBase | BusErrorEventBase[]): void;
   public dispatch(input: DispatchInputBase | DispatchInputBase[]): void {
-    if (Array.isArray(input)) {
-      this.dispatchEachItem(input);
-      return;
-    }
+    timer(0, asyncScheduler)
+      .pipe(observeOn(asyncScheduler), subscribeOn(asyncScheduler), take(1))
+      .subscribe(() => {
+        if (Array.isArray(input)) {
+          this.dispatchEachItem(input);
+          return;
+        }
 
-    if (EventBus.isError(input)) {
-      this.currentError$.next(input);
-    }
+        if (EventBus.isError(input)) {
+          this.currentError$.next(input);
+        }
 
-    if (EventBus.isEvent(input)) {
-      this.currentEvent$.next(input);
-      return;
-    }
+        if (EventBus.isEvent(input)) {
+          this.currentEvent$.next(input);
+          return;
+        }
+      });
   }
 
   private dispatchEachItem(input: DispatchInputBase[]): void {
-    input.forEach((inputItem: DispatchInputBase) => {
-      if (!EventBus.isDispatchInput(inputItem)) {
-        return;
-      }
-      this.dispatch(inputItem);
-    });
+    of(...input)
+      .pipe(observeOn(asyncScheduler), subscribeOn(asyncScheduler), take(1))
+      .subscribe((inputItem: DispatchInputBase) => {
+        if (!EventBus.isDispatchInput(inputItem)) {
+          return;
+        }
+        this.dispatch(inputItem);
+      });
   }
 
   private static isDispatchInput(input: unknown): input is DispatchInputBase {
