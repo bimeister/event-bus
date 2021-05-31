@@ -24,7 +24,7 @@
     "cspell:check": "cspell \"src/**/*.*\" --config=\"cspell.json\""
   },
   "dependencies": {
-    "@bimeister/utilities": "^0.1.0-0041ff8d",
+    "@bimeister/utilities": "^0.1.0-874b2e55",
     "rxjs": "^6.6.0"
   },
   "devDependencies": {
