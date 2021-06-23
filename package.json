@@ -24,12 +24,12 @@
     "cspell:check": "cspell \"src/**/*.*\" --config=\"cspell.json\""
   },
   "peerDependencies": {
-    "rxjs": "^6.6.0",
-    "@bimeister/utilities": "^0.1.0"
+    "@bimeister/utilities": "^0.1.0",
+    "rxjs": "^6.6.0"
   },
   "devDependencies": {
-    "@bimeister/build-cli": "^0.1.0-f91fe1ad",
-    "@bimeister/utilities": "^0.1.0-874b2e55",
+    "@bimeister/build-cli": "^0.1.0-b916fe5b",
+    "@bimeister/utilities": "^0.1.0-1692332b",
     "@types/gulp": "^4.0.8",
     "@types/jest": "^26.0.23",
     "@types/node": "^14.0.23",
