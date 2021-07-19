@@ -1,7 +1,8 @@
 import { isNil, Nullable, observeOnOptional, subscribeOnOptional } from '@bimeister/utilities';
 import { asyncScheduler, merge, NEVER, Observable, of, SchedulerLike, Subject, timer } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { filter, mapTo, take } from 'rxjs/operators';
 import type { DispatchInputBase } from './../internal/classes/dispatch-input-base.abstract';
+import { VOID } from './../internal/constants/void.const';
 import { BusErrorEventBase } from './bus-error-event-base.abstract';
 import { BusEventBase } from './bus-event-base.abstract';
 import type { CatchPredicate } from './catch-predicate.type';
@@ -79,24 +80,23 @@ export class EventBus {
     input: DispatchInputBase | DispatchInputBase[],
     scheduler: Nullable<SchedulerLike> = asyncScheduler
   ): void {
-    timer(0, asyncScheduler)
-      .pipe(observeOnOptional(scheduler), subscribeOnOptional(scheduler), take(1))
-      .subscribe(() => {
-        if (Array.isArray(input)) {
-          this.dispatchEachItem(input);
-          return;
-        }
+    const scheduled$: Observable<void> = isNil(scheduler) ? of(VOID) : timer(0, scheduler).pipe(mapTo(VOID), take(1));
+    scheduled$.pipe(observeOnOptional(scheduler), subscribeOnOptional(scheduler), take(1)).subscribe(() => {
+      if (Array.isArray(input)) {
+        this.dispatchEachItem(input);
+        return;
+      }
 
-        if (EventBus.isError(input)) {
-          this.currentError$.next(input);
-          return;
-        }
+      if (EventBus.isError(input)) {
+        this.currentError$.next(input);
+        return;
+      }
 
-        if (EventBus.isEvent(input)) {
-          this.currentEvent$.next(input);
-          return;
-        }
-      });
+      if (EventBus.isEvent(input)) {
+        this.currentEvent$.next(input);
+        return;
+      }
+    });
   }
 
   private dispatchEachItem(input: DispatchInputBase[], scheduler: Nullable<SchedulerLike> = asyncScheduler): void {
