@@ -1,154 +1,50 @@
-import { isNil, Nullable, observeOnOptional, subscribeOnOptional } from '@bimeister/utilities';
-import { asyncScheduler, merge, NEVER, Observable, of, SchedulerLike, Subject, timer } from 'rxjs';
-import { filter, mapTo, take } from 'rxjs/operators';
-import type { DispatchInputBase } from './../internal/classes/dispatch-input-base.abstract';
-import { VOID } from './../internal/constants/void.const';
-import { BusErrorEventBase } from './bus-error-event-base.abstract';
-import { BusEventBase } from './bus-event-base.abstract';
-import type { CatchPredicate } from './catch-predicate.type';
-
-interface CatcherArguments<T> {
-  predicate?: CatchPredicate<BusEventBase<T>>;
-  scheduler?: Nullable<SchedulerLike>;
-}
-type CatcherArgument<T> = Nullable<SchedulerLike> | CatchPredicate<BusEventBase<T>>;
+import { EventStream } from '../internal/classes/event-stream.class';
+import { Listener } from '../internal/classes/listener.class';
+import { WrappedEvent } from '../internal/classes/wrapped-event.class';
+import { applyRecipientCallbackKey } from '../internal/constants/apply-recipient-callback.key';
+import { PayloadType } from '../internal/enums/payload-type.enum';
+import type { Options } from '../internal/interfaces/options.interface';
+import { isNativeDataCallback } from '../internal/type-guards/is-native-data-callback.type-guard';
+import { isNativeInputPayload } from '../internal/type-guards/is-native-input-payload.type-guard';
+import type { EventCallback } from '../internal/types/event-callback.type';
+import type { RecipientCallback } from '../internal/types/recipient-callback.type';
 
 export class EventBus {
-  private readonly currentEvent$: Subject<BusEventBase> = new Subject<BusEventBase>();
-  private readonly currentError$: Subject<BusErrorEventBase> = new Subject<BusErrorEventBase>();
+  private readonly eventStream: EventStream = new EventStream();
 
-  public catchEvents<T>(
-    predicate?: CatchPredicate<BusEventBase<T>>,
-    scheduler?: Nullable<SchedulerLike>
-  ): Observable<BusEventBase<T>>;
-  public catchEvents<T>(scheduler?: Nullable<SchedulerLike>): Observable<BusEventBase<T>>;
-  public catchEvents<T>(...inputArguments: CatcherArgument<T>[]): Observable<BusEventBase<T>> {
-    if (!Array.isArray(inputArguments)) {
-      return NEVER;
+  public dispatch<T>(input: T, options?: Options.Native): void;
+  public dispatch<T>(input: WrappedEvent<T>, options: Options.Wrapped): void;
+  public dispatch<T>(
+    input: T | WrappedEvent<T>,
+    options: Options.Unified = {
+      payloadType: PayloadType.Native
     }
-
-    const { predicate, scheduler }: CatcherArguments<T> = EventBus.getCatcherArguments<T>(inputArguments);
-
-    if (typeof predicate !== 'function') {
-      return this.currentEvent$.pipe(observeOnOptional(scheduler), subscribeOnOptional(scheduler));
-    }
-
-    return this.currentEvent$.pipe(
-      observeOnOptional(scheduler),
-      subscribeOnOptional(scheduler),
-      filter((event: BusEventBase) => predicate(event))
-    );
-  }
-
-  public catchErrors<T>(
-    predicate?: CatchPredicate<BusErrorEventBase<T>>,
-    scheduler?: Nullable<SchedulerLike>
-  ): Observable<BusEventBase<T>>;
-  public catchErrors<T>(scheduler?: Nullable<SchedulerLike>): Observable<BusEventBase<T>>;
-  public catchErrors<T>(...inputArguments: CatcherArgument<T>[]): Observable<BusErrorEventBase<T>> {
-    if (!Array.isArray(inputArguments)) {
-      return NEVER;
-    }
-
-    const { predicate, scheduler }: CatcherArguments<T> = EventBus.getCatcherArguments<T>(inputArguments);
-
-    if (typeof predicate !== 'function') {
-      return this.currentError$.pipe(observeOnOptional(scheduler), subscribeOnOptional(scheduler));
-    }
-
-    return this.currentError$.pipe(
-      observeOnOptional(scheduler),
-      subscribeOnOptional(scheduler),
-      filter((event: BusErrorEventBase) => predicate(event))
-    );
-  }
-
-  public catchAll<T>(scheduler?: Nullable<SchedulerLike>): Observable<DispatchInputBase<T>>;
-  public catchAll(scheduler: Nullable<SchedulerLike> = asyncScheduler): Observable<DispatchInputBase> {
-    return merge(this.currentEvent$, this.currentError$).pipe(
-      observeOnOptional(scheduler),
-      subscribeOnOptional(scheduler)
-    );
-  }
-
-  public dispatch<T>(event: BusEventBase<T> | BusErrorEventBase<T>, scheduler?: Nullable<SchedulerLike>): void;
-  public dispatch(
-    event: BusEventBase | BusEventBase[] | BusErrorEventBase | BusErrorEventBase[],
-    scheduler?: Nullable<SchedulerLike>
-  ): void;
-  public dispatch(
-    input: DispatchInputBase | DispatchInputBase[],
-    scheduler: Nullable<SchedulerLike> = asyncScheduler
   ): void {
-    const scheduled$: Observable<void> = isNil(scheduler) ? of(VOID) : timer(0, scheduler).pipe(mapTo(VOID), take(1));
-    scheduled$.pipe(observeOnOptional(scheduler), subscribeOnOptional(scheduler), take(1)).subscribe(() => {
-      if (Array.isArray(input)) {
-        this.dispatchEachItem(input);
-        return;
-      }
-
-      if (EventBus.isError(input)) {
-        this.currentError$.next(input);
-        return;
-      }
-
-      if (EventBus.isEvent(input)) {
-        this.currentEvent$.next(input);
-        return;
-      }
-    });
-  }
-
-  private dispatchEachItem(input: DispatchInputBase[], scheduler: Nullable<SchedulerLike> = asyncScheduler): void {
-    of(...input)
-      .pipe(observeOnOptional(scheduler), subscribeOnOptional(scheduler), take(input.length))
-      .subscribe((inputItem: DispatchInputBase) => {
-        if (!EventBus.isDispatchInput(inputItem)) {
-          return;
-        }
-        this.dispatch(inputItem);
-      });
-  }
-
-  private static isDispatchInput(input: unknown): input is DispatchInputBase {
-    return EventBus.isEvent(input) || EventBus.isError(input);
-  }
-
-  private static isEvent(input: unknown): input is BusEventBase {
-    return input instanceof BusEventBase;
-  }
-
-  private static isError(input: unknown): input is BusErrorEventBase {
-    return input instanceof BusErrorEventBase;
-  }
-
-  private static isSchedulerLike(input: unknown): input is SchedulerLike {
-    const schedulerKeys: Set<keyof SchedulerLike> = new Set<keyof SchedulerLike>(['schedule', 'now']);
-
-    if (typeof input !== 'object' || isNil(input)) {
-      return false;
+    if (isNativeInputPayload(input, options)) {
+      const wrappedEvent: WrappedEvent = new WrappedEvent(input);
+      this.eventStream.emit(wrappedEvent);
+      return;
     }
 
-    return Array.from(schedulerKeys).every((key: string) => key in input);
+    this.eventStream.emit(input);
   }
 
-  private static getCatcherArguments<T>(inputArguments: CatcherArgument<T>[]): CatcherArguments<T> {
-    return inputArguments.reduce((accumulatedValue: CatcherArguments<T>, currentArgument: CatcherArgument<T>) => {
-      if (EventBus.isSchedulerLike(currentArgument)) {
-        return {
-          scheduler: currentArgument,
-          ...accumulatedValue
-        };
-      }
+  public listen(callback: EventCallback.Native, options?: Options.Native): Listener;
+  public listen(callback: EventCallback.Wrapped, options: Options.Wrapped): Listener;
+  public listen(
+    callback: EventCallback.Unified,
+    options: Options.Unified = {
+      payloadType: PayloadType.Native
+    }
+  ): Listener {
+    const listener: Listener = new Listener(this.eventStream);
+    const onWrappedEventCallback: RecipientCallback = isNativeDataCallback(callback, options)
+      ? (event: WrappedEvent) => callback(event.payload, listener)
+      : (event: WrappedEvent) => callback(event, listener);
+    listener[applyRecipientCallbackKey](onWrappedEventCallback);
 
-      if (typeof currentArgument === 'function') {
-        return {
-          predicate: currentArgument,
-          ...accumulatedValue
-        };
-      }
+    this.eventStream.subscribe(onWrappedEventCallback);
 
-      return accumulatedValue;
-    }, {});
+    return listener;
   }
 }
