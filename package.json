@@ -1,6 +1,6 @@
 {
   "name": "@bimeister/event-bus",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "SEE LICENSE IN LICENSE",
   "description": "BIMeister frontend event-bus",
   "scripts": {
@@ -27,6 +27,7 @@
     "@bimeister/utilities": "^0.1.0"
   },
   "devDependencies": {
+    "rxjs": "7.4.0",
     "@bimeister/build-cli": "0.1.0-c869ab81",
     "@bimeister/utilities": "0.1.0-72c6467b",
     "@types/gulp": "^4.0.8",
@@ -47,8 +48,5 @@
   "browser": {
     "fs": false,
     "path": false
-  },
-  "dependencies": {
-    "rxjs": "^7.4.0"
   }
 }

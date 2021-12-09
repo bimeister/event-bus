@@ -41,6 +41,7 @@ export class EventBus {
     const onWrappedEventCallback: RecipientCallback = isNativeDataCallback(callback, options)
       ? (event: WrappedEvent) => callback(event.payload, listener)
       : (event: WrappedEvent) => callback(event, listener);
+
     listener[applyRecipientCallbackKey](onWrappedEventCallback);
 
     this.eventStream.subscribe(onWrappedEventCallback);

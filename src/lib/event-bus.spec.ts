@@ -7,13 +7,9 @@ import { VOID } from '../internal/constants/void.const';
 import { PayloadType } from '../internal/enums/payload-type.enum';
 import { EventBus } from './event-bus.class';
 
-const enum PERFORMANCE_MARK {
-  Start = 'Start',
-  End = 'End'
-}
-
 describe('event-bus.class.ts', () => {
   let eventBus: EventBus;
+
   let shuffledArray1K: number[];
   let shuffledArray1M: number[];
 
@@ -30,7 +26,7 @@ describe('event-bus.class.ts', () => {
     performance.clearMarks();
   });
 
-  it('should handle dispatched events in valid sequence', (doneCallback: jest.DoneCallback) => {
+  it('should handle dispatched events (PayloadType.Native) in valid sequence', (doneCallback: jest.DoneCallback) => {
     const input: number[] = shuffledArray1K;
     const output: unknown[] = [];
 
@@ -47,6 +43,31 @@ describe('event-bus.class.ts', () => {
       doneCallback();
     });
     input.forEach((inputItem: number) => eventBus.dispatch(inputItem));
+  }, 10_000);
+
+  it('should handle dispatched events (PayloadType.Wrapped) in valid sequence', (doneCallback: jest.DoneCallback) => {
+    const input: number[] = shuffledArray1K;
+    const output: unknown[] = [];
+
+    eventBus.listen((event: unknown, listener: Listener) => {
+      output.push(event);
+
+      if (output.length !== input.length) {
+        return;
+      }
+
+      expect(output).toEqual(input);
+
+      listener.stop();
+      doneCallback();
+    });
+    input
+      .map((inputItem: number) => new WrappedEvent(inputItem))
+      .forEach((wrappedInputItem: WrappedEvent<number>) =>
+        eventBus.dispatch(wrappedInputItem, {
+          payloadType: PayloadType.Wrapped
+        })
+      );
   }, 10_000);
 
   it('should handle wrapped data (PayloadType.Wrapped)', (doneCallback: jest.DoneCallback) => {
@@ -97,29 +118,29 @@ describe('event-bus.class.ts', () => {
 
     const payload: number[] = shuffledArray1M;
 
-    performance.mark(PERFORMANCE_MARK.Start);
+    performance.mark(MeasureObserver.defaultMarks.Start);
     eventBus.dispatch(payload);
-    performance.mark(PERFORMANCE_MARK.End);
+    performance.mark(MeasureObserver.defaultMarks.End);
 
-    performance.measure(measureName, PERFORMANCE_MARK.Start, PERFORMANCE_MARK.End);
+    performance.measure(measureName, MeasureObserver.defaultMarks.Start, MeasureObserver.defaultMarks.End);
   }, 10_000);
 
-  it('should dispatch 1 million events faster then 1.5s (sequence)', (doneCallback: jest.DoneCallback) => {
+  it('should dispatch 1 million events faster then 3s (sequence)', (doneCallback: jest.DoneCallback) => {
     const measureName: string = 'Dispatch measure (sequence)';
 
     new MeasureObserver(measureName).observe((observer: PerformanceObserver, targetEntry: PerformanceEntry) => {
-      expect(targetEntry.duration).toBeLessThan(1500);
+      expect(targetEntry.duration).toBeLessThan(3000);
       observer.disconnect();
       doneCallback();
     });
 
     const payload: number[] = shuffledArray1M;
 
-    performance.mark(PERFORMANCE_MARK.Start);
+    performance.mark(MeasureObserver.defaultMarks.Start);
     payload.forEach((item: number) => eventBus.dispatch(item));
-    performance.mark(PERFORMANCE_MARK.End);
+    performance.mark(MeasureObserver.defaultMarks.End);
 
-    performance.measure(measureName, PERFORMANCE_MARK.Start, PERFORMANCE_MARK.End);
+    performance.measure(measureName, MeasureObserver.defaultMarks.Start, MeasureObserver.defaultMarks.End);
   }, 10_000);
 
   it('should dispatch 1 event and catch it faster then 3ms', (doneCallback: jest.DoneCallback) => {
@@ -133,11 +154,11 @@ describe('event-bus.class.ts', () => {
 
     const payload: number = NaN;
 
-    performance.mark(PERFORMANCE_MARK.Start);
+    performance.mark(MeasureObserver.defaultMarks.Start);
     eventBus.listen((_response: unknown, listener: Listener) => listener.stop());
     eventBus.dispatch(payload);
-    performance.mark(PERFORMANCE_MARK.End);
+    performance.mark(MeasureObserver.defaultMarks.End);
 
-    performance.measure(measureName, PERFORMANCE_MARK.Start, PERFORMANCE_MARK.End);
+    performance.measure(measureName, MeasureObserver.defaultMarks.Start, MeasureObserver.defaultMarks.End);
   }, 10_000);
 });

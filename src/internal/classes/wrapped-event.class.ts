@@ -1,5 +1,6 @@
 import { getUuid } from '@bimeister/utilities';
 import type { Uuid } from '../types/uuid.type';
+import { Lineage } from './lineage.class';
 
 /**
  * @internal
@@ -7,15 +8,19 @@ import type { Uuid } from '../types/uuid.type';
 export class WrappedEvent<T = unknown> {
   public readonly id: Uuid = getUuid();
 
-  private readonly pedigree: Uuid[] = [];
+  public readonly lineage: Lineage = new Lineage();
 
   constructor(public readonly payload: T) {}
 
-  public setDescendantOf(ancestor: WrappedEvent<T>): void {
-    this.pedigree.push(ancestor.id);
+  public setParent(parentEvent: WrappedEvent): void {
+    this.lineage.setParent(parentEvent.lineage);
   }
 
-  public isDescendantOf(ancestor: WrappedEvent<T>): boolean {
-    return this.pedigree.includes(ancestor.id);
+  public setDescendant(childEvent: WrappedEvent): void {
+    this.lineage.setChild(childEvent.lineage);
+  }
+
+  public isDescendantOf(targetEvent: WrappedEvent): boolean {
+    return targetEvent.lineage.getAllChildren().includes(this.lineage);
   }
 }
