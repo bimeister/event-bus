@@ -1,6 +1,5 @@
 import type { Nullable } from '@bimeister/utilities';
-import { applyRecipientCallbackKey } from '../constants/apply-recipient-callback.key';
-import type { RecipientCallback } from '../types/recipient-callback.type';
+import { applyRecipientCallbackKey, RecipientCallback } from 'packages/common';
 import type { EventStream } from './event-stream.class';
 
 /**

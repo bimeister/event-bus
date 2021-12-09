@@ -48,5 +48,11 @@
   "browser": {
     "fs": false,
     "path": false
-  }
+  },
+  "workspaces": [
+    "packages/common",
+    "packages/native",
+    "packages/rxjs",
+    "packages/testing"
+  ]
 }

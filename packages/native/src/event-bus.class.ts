@@ -1,13 +1,15 @@
-import { EventStream } from '../internal/classes/event-stream.class';
-import { Listener } from '../internal/classes/listener.class';
-import { WrappedEvent } from '../internal/classes/wrapped-event.class';
-import { applyRecipientCallbackKey } from '../internal/constants/apply-recipient-callback.key';
-import { PayloadType } from '../internal/enums/payload-type.enum';
-import type { Options } from '../internal/interfaces/options.interface';
-import { isNativeDataCallback } from '../internal/type-guards/is-native-data-callback.type-guard';
-import { isNativeInputPayload } from '../internal/type-guards/is-native-input-payload.type-guard';
-import type { EventCallback } from '../internal/types/event-callback.type';
-import type { RecipientCallback } from '../internal/types/recipient-callback.type';
+import {
+  applyRecipientCallbackKey,
+  EventCallback,
+  isNativeDataCallback,
+  isNativeInputPayload,
+  Options,
+  PayloadType,
+  RecipientCallback,
+  WrappedEvent
+} from 'packages/common';
+import { EventStream } from './event-stream.class';
+import { Listener } from './listener.class';
 
 export class EventBus {
   private readonly eventStream: EventStream = new EventStream();

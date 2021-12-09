@@ -1,3 +1,4 @@
+import { VOID } from 'packages/common';
 import {
   EntryType,
   PerformanceEntry,
@@ -5,7 +6,6 @@ import {
   PerformanceObserverCallback,
   PerformanceObserverEntryList
 } from 'perf_hooks';
-import { VOID } from '../constants/void.const';
 
 type MeasureObserverCallback = (observer: PerformanceObserver, targetEntry: PerformanceEntry) => void;
 enum PERFORMANCE_MARK {
