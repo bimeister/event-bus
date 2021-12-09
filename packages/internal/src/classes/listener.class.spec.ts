@@ -1,4 +1,4 @@
-import { applyRecipientCallbackKey, RecipientCallback, VOID } from 'packages/common';
+import { applyRecipientCallbackKey, RecipientCallback, VOID } from 'packages/internal';
 import { any } from 'packages/testing';
 import { EventStream } from './event-stream.class';
 import { Listener } from './listener.class';
@@ -18,6 +18,8 @@ describe('listener.class.ts', () => {
   }, 10_000);
 
   it('should be activated after subscription', (doneCallback: jest.DoneCallback) => {
+    console.log({ listener, type: typeof listener[applyRecipientCallbackKey] });
+
     listener[applyRecipientCallbackKey](recipientCallbackMock);
     expect(listener.isActive).toBeTruthy();
     doneCallback();

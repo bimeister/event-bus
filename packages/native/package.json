@@ -1,6 +1,8 @@
 {
+  "name": "@workspaces/native",
   "private": true,
   "scripts": {
-    "barrel": "barrelsby --config=\"./../../barrelsby.json\" --directory=\"./src\""
+    "barrel": "barrelsby --config=\"./../barrelsby.json\" --directory=\"./src\"",
+    "test": "jest --config ./../jest.config.ts --coverage true --passWithNoTests --selectProjects native"
   }
 }

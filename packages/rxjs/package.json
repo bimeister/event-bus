@@ -1,6 +1,8 @@
 {
+  "name": "@workspaces/rxjs",
   "private": true,
   "scripts": {
-    "barrel": "echo 1"
+    "barrel": "echo 1",
+    "test": "echo 1"
   }
 }

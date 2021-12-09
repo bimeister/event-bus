@@ -1,10 +1,8 @@
-import { PayloadType } from '@bimeister/event-bus-common/src/enums/payload-type.enum';
 import { getShuffledArray } from '@bimeister/utilities';
-import { VOID, WrappedEvent } from 'packages/common';
+import { Listener, PayloadType, VOID, WrappedEvent } from 'packages/internal';
 import { MeasureObserver } from 'packages/testing';
 import { performance, PerformanceEntry, PerformanceObserver } from 'perf_hooks';
 import { EventBus } from './event-bus.class';
-import type { Listener } from './listener.class';
 
 describe('event-bus.class.ts', () => {
   let eventBus: EventBus;

@@ -5,8 +5,9 @@
     "module": "CommonJS",
     "types": ["jest", "node"],
     "lib": ["DOM", "ESNext"],
+    "target": "ESNext",
     "sourceMap": true
   },
-  "extends": "./tsconfig.json",
-  "include": ["**/*.spec.ts", "**/*.d.ts"]
+  "extends": "./../tsconfig.json",
+  "include": ["./packages/**/*.spec.ts"]
 }

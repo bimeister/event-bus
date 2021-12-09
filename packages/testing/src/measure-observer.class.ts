@@ -1,4 +1,4 @@
-import { VOID } from 'packages/common';
+import { VOID } from 'packages/internal';
 import {
   EntryType,
   PerformanceEntry,
