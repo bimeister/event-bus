@@ -1,5 +1,9 @@
 import type { Nullable } from '@bimeister/utilities';
-import { applyRecipientCallbackKey, EventStream, RecipientCallback } from 'packages/internal';
+import type { EventStream, RecipientCallback } from 'packages/internal';
+/**
+ * Have no idea, why this import works and `packages/internal` – doesn't
+ */
+import { applyRecipientCallbackKey } from 'packages/internal/src/constants/apply-recipient-callback-key.const';
 
 /**
  * @internal
@@ -12,10 +16,10 @@ export class Listener {
     return this.#isActive;
   }
 
-  // tslint:disable: member-access
+  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
   #isActive: boolean = false;
   #recipientCallback: Nullable<RecipientCallback> = undefined;
-  // tslint:enable: member-access
+  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
 
   constructor(private readonly eventStream: EventStream) {}
 

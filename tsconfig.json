@@ -29,7 +29,11 @@
     "types": ["jest", "node"],
     "typeRoots": ["node_modules/@types"],
     "importsNotUsedAsValues": "error",
-    "allowUnreachableCode": false
+    "allowUnreachableCode": false,
+    "paths": {
+      "@bimeister/utilities": ["./packages/utilities/index.ts"]
+    }
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["./packages/**/index.ts"]
 }

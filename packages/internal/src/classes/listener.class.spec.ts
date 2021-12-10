@@ -18,8 +18,6 @@ describe('listener.class.ts', () => {
   }, 10_000);
 
   it('should be activated after subscription', (doneCallback: jest.DoneCallback) => {
-    console.log({ listener, type: typeof listener[applyRecipientCallbackKey] });
-
     listener[applyRecipientCallbackKey](recipientCallbackMock);
     expect(listener.isActive).toBeTruthy();
     doneCallback();
