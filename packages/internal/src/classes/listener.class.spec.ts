@@ -1,5 +1,4 @@
 import { applyRecipientCallbackKey, RecipientCallback, VOID } from 'packages/internal';
-import { any } from 'packages/testing';
 import { EventStream } from './event-stream.class';
 import { Listener } from './listener.class';
 
@@ -12,40 +11,27 @@ describe('listener.class.ts', () => {
     listener = new Listener(eventStream);
   });
 
-  it('should be deactivated by default', (doneCallback: jest.DoneCallback) => {
+  it('should be deactivated by default', () => {
     expect(listener.isActive).toBeFalsy();
-    doneCallback();
-  }, 10_000);
+  });
 
-  it('should be activated after subscription', (doneCallback: jest.DoneCallback) => {
+  it('should be activated after subscription', () => {
     listener[applyRecipientCallbackKey](recipientCallbackMock);
     expect(listener.isActive).toBeTruthy();
-    doneCallback();
-  }, 10_000);
+  });
 
-  it('should be deactivated after stop', (doneCallback: jest.DoneCallback) => {
+  it('should be deactivated after stop', () => {
     expect(listener.isActive).toBeFalsy();
-    doneCallback();
-  }, 10_000);
+  });
 
-  it('should not be stopped twice', (doneCallback: jest.DoneCallback) => {
-    listener[applyRecipientCallbackKey](recipientCallbackMock);
+  it('should not try to unsubscribe from invalid subscription', () => {
+    listener[applyRecipientCallbackKey]({} as any);
     listener.stop();
-    expect(() => listener.stop()).toThrowError();
-    doneCallback();
-  }, 10_000);
+  });
 
-  it('should not try to unsubscribe from invalid subscription', (doneCallback: jest.DoneCallback) => {
-    listener[applyRecipientCallbackKey](any({}));
-    listener.stop();
-    doneCallback();
-  }, 10_000);
-
-  it('should not allow subscriptions while deactivated', (doneCallback: jest.DoneCallback) => {
+  it('should not allow subscriptions while deactivated', () => {
     listener[applyRecipientCallbackKey](recipientCallbackMock);
 
     expect(() => listener[applyRecipientCallbackKey](recipientCallbackMock)).toThrowError();
-
-    doneCallback();
-  }, 10_000);
+  });
 });

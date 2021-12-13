@@ -34,7 +34,7 @@ export class Listener {
 
   public stop(): void {
     if (!this.#isActive) {
-      throw new Error('[EventBus] listener is already stopped.');
+      return;
     }
 
     this.#isActive = false;

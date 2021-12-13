@@ -40,7 +40,7 @@ describe('event-bus.class.ts', () => {
       doneCallback();
     });
     input.forEach((inputItem: number) => eventBus.dispatch(inputItem));
-  }, 10_000);
+  });
 
   it('should handle dispatched events (PayloadType.Wrapped) in valid sequence', (doneCallback: jest.DoneCallback) => {
     const input: number[] = shuffledArray1K;
@@ -65,7 +65,7 @@ describe('event-bus.class.ts', () => {
           payloadType: PayloadType.Wrapped
         })
       );
-  }, 10_000);
+  });
 
   it('should handle wrapped data (PayloadType.Wrapped)', (doneCallback: jest.DoneCallback) => {
     const payload: number[] = shuffledArray1K;
@@ -84,7 +84,7 @@ describe('event-bus.class.ts', () => {
     );
 
     eventBus.dispatch(payload);
-  }, 10_000);
+  });
 
   it('should handle unwrapped data (PayloadType.Native)', (doneCallback: jest.DoneCallback) => {
     const payload: number[] = shuffledArray1K;
@@ -102,7 +102,7 @@ describe('event-bus.class.ts', () => {
     );
 
     eventBus.dispatch(payload);
-  }, 10_000);
+  });
 
   it('should dispatch 100 million events faster then 1s (bulk)', (doneCallback: jest.DoneCallback) => {
     const measureName: string = 'Dispatch measure (bulk)';
@@ -120,7 +120,7 @@ describe('event-bus.class.ts', () => {
     performance.mark(MeasureObserver.defaultMarks.End);
 
     performance.measure(measureName, MeasureObserver.defaultMarks.Start, MeasureObserver.defaultMarks.End);
-  }, 10_000);
+  });
 
   it('should dispatch 1 million events faster then 5s (sequence)', (doneCallback: jest.DoneCallback) => {
     const measureName: string = 'Dispatch measure (sequence)';
@@ -138,7 +138,7 @@ describe('event-bus.class.ts', () => {
     performance.mark(MeasureObserver.defaultMarks.End);
 
     performance.measure(measureName, MeasureObserver.defaultMarks.Start, MeasureObserver.defaultMarks.End);
-  }, 10_000);
+  });
 
   it('should dispatch 1 event and catch it faster then 3ms', (doneCallback: jest.DoneCallback) => {
     const measureName: string = 'Dispatch+Catch measure';
@@ -157,5 +157,5 @@ describe('event-bus.class.ts', () => {
     performance.mark(MeasureObserver.defaultMarks.End);
 
     performance.measure(measureName, MeasureObserver.defaultMarks.Start, MeasureObserver.defaultMarks.End);
-  }, 10_000);
+  });
 });

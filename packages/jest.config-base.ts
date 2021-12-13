@@ -1,6 +1,7 @@
 import type { Config } from '@jest/types';
 
 const transpilingOptions: Config.InitialOptions = {
+  testTimeout: 10_000,
   transform: {
     '^.+\\.(ts)$': 'ts-jest'
   },

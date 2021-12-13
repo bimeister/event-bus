@@ -2,7 +2,7 @@ export class Lineage {
   private parentRef: Lineage | undefined;
   private childRef: Lineage | undefined;
 
-  public setParent(parent: Lineage): void {
+  public setParent(parent: NonNullable<Lineage>): void {
     if (this.parentRef === parent) {
       return;
     }
@@ -15,7 +15,7 @@ export class Lineage {
     parent.setChild(this);
   }
 
-  public setChild(child: Lineage): void {
+  public setChild(child: NonNullable<Lineage>): void {
     if (this.childRef === child) {
       return;
     }
@@ -43,7 +43,7 @@ export class Lineage {
     let incomingParent: Lineage | undefined = this.parentRef;
     do {
       if (incomingParent === undefined) {
-        continue;
+        break;
       }
       parents.push(incomingParent);
       incomingParent = incomingParent.parentRef;
@@ -58,7 +58,7 @@ export class Lineage {
     let incomingChild: Lineage | undefined = this.childRef;
     do {
       if (incomingChild === undefined) {
-        continue;
+        break;
       }
       children.push(incomingChild);
       incomingChild = incomingChild.childRef;
