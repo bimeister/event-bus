@@ -28,6 +28,13 @@ describe('wrapped-event.class.ts', () => {
       return parentEvent;
     }, targetEvent);
 
-    expect(targetEvent.isChildOf(greatGreatGrandEvent)).toBeTruthy();
+    expect(targetEvent.isChildOf(greatGreatGrandEvent)).toBe(true);
+  });
+
+  it('should correctly create child events', () => {
+    const parentEvent: WrappedEvent = new WrappedEvent(null);
+    const childEvent: WrappedEvent = parentEvent.createChild(undefined);
+
+    expect(childEvent.isChildOf(parentEvent)).toBe(true);
   });
 });

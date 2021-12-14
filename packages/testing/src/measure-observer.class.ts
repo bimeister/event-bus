@@ -8,7 +8,7 @@ import {
 } from 'perf_hooks';
 
 type MeasureObserverCallback = (observer: PerformanceObserver, targetEntry: PerformanceEntry) => void;
-enum PERFORMANCE_MARK {
+enum PerformanceMark {
   Start = 'Start',
   End = 'End'
 }
@@ -16,7 +16,7 @@ enum PERFORMANCE_MARK {
 export class MeasureObserver {
   private readonly performanceObserver: PerformanceObserver;
 
-  public static readonly defaultMarks: typeof PERFORMANCE_MARK = PERFORMANCE_MARK;
+  public static readonly defaultMarks: typeof PerformanceMark = PerformanceMark;
   private static readonly entryType: EntryType = 'measure';
 
   constructor(measureName: string) {
