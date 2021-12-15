@@ -5,6 +5,7 @@ const pipelineConfig: Config.InitialOptions = {
   ...baseConfig,
   collectCoverage: true,
   reporters: [
+    'default',
     [
       'jest-junit',
       {

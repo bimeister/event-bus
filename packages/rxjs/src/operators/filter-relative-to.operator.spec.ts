@@ -24,7 +24,7 @@ describe('filter-relative-to.operator.ts', () => {
       }, []);
 
     trashedInputEvents = inputEvents.map((inputEvent: WrappedEvent) => [inputEvent, new WrappedEvent(NaN)]).flat(1);
-  }, 30_000);
+  });
 
   it('should pass only data relative to event', (doneCallback: jest.DoneCallback) => {
     const rootEvent: WrappedEvent = inputEvents[0];
