@@ -1,13 +1,6 @@
-import { getUuid } from '@bimeister/utilities';
-import type { Uuid } from '../types/uuid.type';
 import { Lineage } from './lineage.class';
 
-/**
- * @internal
- */
 export class WrappedEvent<T = unknown> {
-  public readonly id: Uuid = getUuid();
-
   public readonly lineage: Lineage = new Lineage();
 
   constructor(public readonly payload: T) {}
