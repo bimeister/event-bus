@@ -1,5 +1,5 @@
+import { EventBus as NativeEventBus } from 'packages/event-bus-native';
 import { PayloadType, WrappedEvent } from 'packages/internal';
-import { EventBus as NativeEventBus } from 'packages/native';
 import { combineLatest, Observable } from 'rxjs';
 import { take, toArray } from 'rxjs/operators';
 import { EventBus } from './event-bus.class';

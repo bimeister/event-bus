@@ -34,12 +34,12 @@ const baseConfig: Config.InitialOptions = {
     {
       ...transpilingOptions,
       displayName: 'native',
-      testRegex: '\\/native\\/src\\/.*\\.spec\\.ts$'
+      testRegex: '\\/event-bus-native\\/src\\/.*\\.spec\\.ts$'
     },
     {
       ...transpilingOptions,
       displayName: 'rxjs',
-      testRegex: '\\/rxjs\\/src\\/.*\\.spec\\.ts$'
+      testRegex: '\\/event-bus-rxjs\\/src\\/.*\\.spec\\.ts$'
     },
     {
       ...transpilingOptions,
