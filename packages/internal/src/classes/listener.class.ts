@@ -1,8 +1,5 @@
-import type { Nullable } from '@bimeister/utilities';
+import type { Nullable } from '@bimeister/utilities/types/nullable.type';
 import type { EventStream, RecipientCallback } from 'packages/internal';
-/**
- * Have no idea, why this import works and `packages/internal` – doesn't
- */
 import { applyRecipientCallbackKey } from 'packages/internal/src/constants/apply-recipient-callback-key.const';
 
 /**

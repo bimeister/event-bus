@@ -46,11 +46,11 @@ function buildTypings(options: { inputPath: string; outputPath: string }): Promi
 const baseBuildConfig: Partial<BuildOptions> = {
   bundle: true,
   format: 'esm',
-  external: ['rxjs', 'uuid'],
+  external: ['rxjs'],
   minify: true,
   platform: 'neutral',
   sourcemap: 'external',
-  target: 'esnext',
+  target: 'es6',
   treeShaking: true,
   tsconfig: './tsconfig.json'
 };

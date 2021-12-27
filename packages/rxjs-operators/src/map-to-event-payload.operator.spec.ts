@@ -1,6 +1,6 @@
-import { VOID, WrappedEvent } from 'packages/internal';
 import { from } from 'rxjs';
 import { toArray } from 'rxjs/operators';
+import { VOID, WrappedEvent } from './../../../packages/internal';
 import { mapToEventPayload } from './map-to-event-payload.operator';
 
 describe('map-to-event-payload.operator.ts', () => {

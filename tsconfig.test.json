@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
     "emitDecoratorMetadata": false,
+    "allowSyntheticDefaultImports": true,
     "outDir": "../out-tsc/spec",
-    "module": "CommonJS",
     "types": ["jest", "node"],
     "lib": ["DOM", "ESNext"],
-    "target": "ESNext",
+    "target": "ES6",
+    "module": "UMD",
     "sourceMap": true
   },
   "extends": "./tsconfig.json",

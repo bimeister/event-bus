@@ -1,7 +1,7 @@
-import { getShuffledArray } from '@bimeister/utilities';
-import { Listener, PayloadType, VOID, WrappedEvent } from 'packages/internal';
-import { MeasureObserver } from 'packages/testing';
+import { getShuffledArray } from '@bimeister/utilities/common/get-shuffled-array.function';
 import { performance, PerformanceEntry, PerformanceObserver } from 'perf_hooks';
+import { Listener, PayloadType, VOID, WrappedEvent } from './../../../packages/internal';
+import { MeasureObserver } from './../../../packages/testing';
 import { EventBus } from './event-bus.class';
 
 function getSequence(size: number): number[] {
