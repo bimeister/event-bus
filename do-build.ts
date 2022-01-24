@@ -1,98 +1,224 @@
-import { generateDtsBundle } from 'dts-bundle-generator';
-import { build, BuildOptions, BuildResult } from 'esbuild';
-import { writeFile } from 'fs';
+import {
+  buildBundleTypings,
+  buildPackageJson,
+  Dependencies,
+  getGroupedSourceFileDataByPackageName,
+  PackageJson,
+  PackageJsonExports,
+  PackageJsonExportsItem,
+  SourceFileData
+} from '@bimeister/utilities/build';
+import { getAllNestedFilePaths } from '@bimeister/utilities/filesystem';
+import { build, BuildOptions } from 'esbuild';
+import { readFile, rm } from 'fs/promises';
 
-function buildTypings(options: { inputPath: string; outputPath: string }): Promise<void> {
-  const typings: Promise<string[]> = new Promise(
-    (resolve: (payload: string[]) => void, reject: (reason: unknown) => void) => {
-      try {
-        const result: string[] = generateDtsBundle(
-          [
-            {
-              filePath: options.inputPath,
-              output: {
-                noBanner: true
-              }
-            }
-          ],
-          {
-            preferredConfigPath: './tsconfig.json'
-          }
-        );
+const distFolderPath: string = `${__dirname}/dist`;
+const packagesFolderPath: string = `${__dirname}/packages`;
+const tsConfigFilePath: string = './tsconfig.json';
+const rootPackageJsonFilePath: string = `${__dirname}/package.json`;
 
-        resolve(result);
-      } catch (error: unknown) {
-        reject(error);
-      }
-    }
-  );
-
-  const fileWriteOperation: Promise<void> = typings.then(
-    (result: string[]) =>
-      new Promise<void>((resolve: (payload: void) => void, reject: (reason: unknown) => void) => {
-        writeFile(options.outputPath, result.join(), (error: unknown | null) => {
-          if (error === null) {
-            resolve();
-          }
-
-          reject(error);
-        });
-      })
-  );
-
-  return fileWriteOperation;
-}
-
-const baseBuildConfig: Partial<BuildOptions> = {
+const esBuildConfig: BuildOptions = {
+  chunkNames: 'chunks/[name]-[hash]',
   bundle: true,
-  format: 'esm',
+  splitting: true,
   external: ['rxjs'],
   minify: true,
   platform: 'neutral',
   sourcemap: 'external',
-  target: 'es6',
+  target: 'esnext',
+  format: 'esm',
   treeShaking: true,
-  tsconfig: './tsconfig.json'
+  tsconfig: tsConfigFilePath,
+  mainFields: ['module', 'main', 'browser'],
+  color: true,
+  metafile: true,
+  legalComments: 'none'
 };
+const notBundledPackages: Set<string> = new Set<string>(['internal', 'testing']);
 
-const buildNativeLibrary: Promise<BuildResult> = build({
-  ...baseBuildConfig,
-  entryPoints: ['./packages/event-bus-native/index.ts'],
-  outfile: './dist/index.js'
+const typeOnlyFileEndings: Set<string> = new Set<string>(
+  ['type', 'interface', 'trait'].flatMap((prefix: string) => [`.${prefix}.ts`, `${prefix}s/index.ts`])
+);
+
+const outDirByPackageName: Map<string, string> = new Map<string, string>([
+  ['event-bus-native', 'native'],
+  ['event-bus-rxjs', 'rxjs']
+]);
+
+getAllNestedFilePaths(packagesFolderPath).then((sourceFilePaths: string[]) => {
+  const tsSourceFilePaths: string[] = sourceFilePaths.filter(
+    (filePath: string) => filePath.includes('/src/') && filePath.endsWith('.ts') && !filePath.endsWith('.spec.ts')
+  );
+
+  const sourceFilesDataByPackageName: Map<string, SourceFileData[]> =
+    getGroupedSourceFileDataByPackageName(tsSourceFilePaths);
+
+  return Promise.resolve()
+    .then(() => rm(distFolderPath, { force: true, recursive: true }))
+    .then(() => generateBundle(sourceFilesDataByPackageName))
+    .then(() => generateTypings(sourceFilesDataByPackageName))
+    .then(() => generatePackageJson(sourceFilePaths, sourceFilesDataByPackageName));
 });
 
-const buildRxJsLibrary: Promise<BuildResult> = build({
-  ...baseBuildConfig,
-  entryPoints: ['./packages/event-bus-rxjs/index.ts'],
-  outfile: './dist/rxjs/index.js'
-});
+async function generateBundle(sourceFilesDataByPackageName: Map<string, SourceFileData[]>): Promise<void> {
+  sourceFilesDataByPackageName.forEach(async (filesData: SourceFileData[], packageName: string) => {
+    if (notBundledPackages.has(packageName)) {
+      return;
+    }
 
-const buildRxJsOperatorsLibrary: Promise<BuildResult> = build({
-  ...baseBuildConfig,
-  entryPoints: ['./packages/rxjs-operators/index.ts'],
-  outfile: './dist/rxjs/operators/index.js'
-});
+    const entryPoints: string[] = filesData
+      .map((fileData: SourceFileData) => fileData.filePath)
+      .filter((filePath: string) => {
+        const invalidEndings: string[] = Array.from(typeOnlyFileEndings);
+        const isTypeOnlyFile: boolean = invalidEndings.some((ending: string) => filePath.endsWith(ending));
+        return !isTypeOnlyFile;
+      });
 
-Promise.resolve()
-  .then(() => buildNativeLibrary)
-  .then(() =>
-    buildTypings({
-      inputPath: './packages/event-bus-native/index.ts',
-      outputPath: './dist/index.d.ts'
+    const outdir: string = outDirByPackageName.has(packageName)
+      ? `${distFolderPath}/${outDirByPackageName.get(packageName)}/`
+      : `${distFolderPath}/${packageName}/`;
+    const buildConfig: BuildOptions = {
+      ...esBuildConfig,
+      outdir,
+      entryPoints
+    };
+
+    const commonJsConfig: BuildOptions = {
+      ...buildConfig,
+      splitting: false,
+      format: 'cjs',
+      outExtension: { '.js': '.cjs' }
+    };
+
+    const esModuleConfig: BuildOptions = {
+      ...buildConfig,
+      splitting: true,
+      format: 'esm',
+      outExtension: { '.js': '.mjs' }
+    };
+
+    await build(commonJsConfig);
+    await build(esModuleConfig);
+  });
+}
+
+async function generateTypings(sourceFilesDataByPackageName: Map<string, SourceFileData[]>): Promise<void> {
+  sourceFilesDataByPackageName.forEach(async (_filesData: SourceFileData[], packageName: string) => {
+    if (notBundledPackages.has(packageName)) {
+      return;
+    }
+
+    const packageDir: string = outDirByPackageName.has(packageName)
+      ? `${outDirByPackageName.get(packageName)}`
+      : `${packageName}`;
+
+    const mainFilePath: string = `${packagesFolderPath}/${packageName}/src/index.ts`;
+    const bundleTypingsFilePath: string = `${distFolderPath}/${packageDir}/index.d.ts`;
+
+    await buildBundleTypings({
+      configPath: tsConfigFilePath,
+      inputPath: mainFilePath,
+      outputPath: bundleTypingsFilePath
+    });
+  });
+}
+
+async function generatePackageJson(
+  sourceFilePaths: string[],
+  sourceFilesDataByPackageName: Map<string, SourceFileData[]>
+): Promise<void> {
+  const packageJsonFilePaths: string[] = sourceFilePaths.filter((filePath: string) =>
+    filePath.endsWith('package.json')
+  );
+
+  const collectedDependencies: Dependencies = await packageJsonFilePaths
+    .concat([rootPackageJsonFilePath])
+    .reduce(async (accumulatedData: Promise<Dependencies>, packageJsonFilePath: string) => {
+      const fileContent: string = await readFile(packageJsonFilePath, { encoding: 'utf8' });
+      const parsedFileContent: PackageJson = JSON.parse(fileContent);
+      const accumulatedDependencies: Dependencies = await accumulatedData;
+
+      const dependencies: Dependencies | undefined = parsedFileContent.dependencies;
+      if (dependencies !== undefined) {
+        Object.assign(accumulatedDependencies, dependencies);
+      }
+
+      const optionalDependencies: Dependencies | undefined = parsedFileContent.optionalDependencies;
+      if (optionalDependencies !== undefined) {
+        Object.assign(accumulatedDependencies, optionalDependencies);
+      }
+
+      const peerDependencies: Dependencies | undefined = parsedFileContent.peerDependencies;
+      if (peerDependencies !== undefined) {
+        Object.assign(accumulatedDependencies, peerDependencies);
+      }
+
+      return accumulatedData;
+    }, Promise.resolve({}));
+
+  const exportsEntries: [string, PackageJsonExportsItem][] = Array.from(sourceFilesDataByPackageName.values())
+    .flat(1)
+    .filter(({ packageName, filePath }: SourceFileData) => {
+      const packageShouldBeExported: boolean = !notBundledPackages.has(packageName);
+      const isBarrelExportFile: boolean = filePath.endsWith('/index.ts');
+      return packageShouldBeExported && isBarrelExportFile;
     })
-  )
-  .then(() => buildRxJsLibrary)
-  .then(() =>
-    buildTypings({
-      inputPath: './packages/event-bus-rxjs/index.ts',
-      outputPath: './dist/rxjs/index.d.ts'
-    })
-  )
-  .then(() => buildRxJsOperatorsLibrary)
-  .then(() =>
-    buildTypings({
-      inputPath: './packages/rxjs-operators/index.ts',
-      outputPath: './dist/rxjs/operators/index.d.ts'
-    })
-  )
-  .catch(() => process.exit(1));
+    .map(({ packageName, filePathFromPackageSrc }: SourceFileData) => {
+      const packageDir: string = outDirByPackageName.has(packageName)
+        ? `${outDirByPackageName.get(packageName)}`
+        : `${packageName}`;
+
+      const filePathWithoutExtension: string = `./${packageDir}${filePathFromPackageSrc}`.replace('.ts', '');
+
+      const exportsItem: PackageJsonExportsItem = {
+        import: `${filePathWithoutExtension}.mjs`,
+        require: `${filePathWithoutExtension}.cjs`,
+        fesm2020: `${filePathWithoutExtension}.mjs`,
+        fesm2015: `${filePathWithoutExtension}.mjs`,
+        esm2020: `${filePathWithoutExtension}.mjs`,
+        module: `${filePathWithoutExtension}.mjs`,
+        es2020: `${filePathWithoutExtension}.mjs`,
+        main: `${filePathWithoutExtension}.cjs`,
+        typings: `${filePathWithoutExtension}.d.ts`,
+        default: `${filePathWithoutExtension}.cjs`
+      };
+
+      if (packageName === 'event-bus-native') {
+        return ['.', exportsItem];
+      }
+
+      const entryPoint: string = filePathWithoutExtension.replace('/index', '');
+      return [entryPoint, exportsItem];
+    });
+
+  const rootTypesFilePath: string = `./native/index.d.ts`;
+  const rootEsmFilePath: string = `./native/index.mjs`;
+  const rootCommonJsFilePath: string = `./native/index.cjs`;
+  const topLevelExports: [string, PackageJsonExportsItem][] = [
+    [
+      './package.json',
+      {
+        default: './package.json'
+      }
+    ]
+  ];
+  const exports: PackageJsonExports = Object.fromEntries(topLevelExports.concat(exportsEntries));
+
+  await buildPackageJson({
+    currentPackageJsonPath: rootPackageJsonFilePath,
+    targetPackageJsonPath: `${distFolderPath}/package.json`,
+    override: {
+      optionalDependencies: collectedDependencies,
+      exports,
+      sideEffects: false,
+      workspaces: [],
+      fesm2020: rootEsmFilePath,
+      fesm2015: rootEsmFilePath,
+      esm2020: rootEsmFilePath,
+      typings: rootTypesFilePath,
+      module: rootEsmFilePath,
+      es2020: rootEsmFilePath,
+      main: rootCommonJsFilePath
+    }
+  });
+}

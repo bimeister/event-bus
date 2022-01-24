@@ -1,4 +1,4 @@
-import { isNil } from '@bimeister/utilities/common/is-nil.function';
+import { isNil } from '@bimeister/utilities/common';
 import { PayloadType } from '../enums/payload-type.enum';
 import type { Options } from '../interfaces/options.interface';
 

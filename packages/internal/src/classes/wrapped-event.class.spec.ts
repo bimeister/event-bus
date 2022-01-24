@@ -1,4 +1,5 @@
-import { VOID } from '../constants/void.const';
+import { VOID } from '@bimeister/utilities';
+import type { Lineage } from './lineage.class';
 import { WrappedEvent } from './wrapped-event.class';
 
 describe('wrapped-event.class.ts', () => {
@@ -11,7 +12,10 @@ describe('wrapped-event.class.ts', () => {
   it('should correctly set parent event', () => {
     const parentEvent: WrappedEvent = new WrappedEvent(null);
     targetEvent.setParent(parentEvent);
-    expect(parentEvent.lineage.getDirectChild()).toBe(targetEvent.lineage);
+
+    const directChildren: Lineage[] = parentEvent.lineage.getDirectChildren();
+    expect(directChildren[0]).toBe(targetEvent.lineage);
+    expect(directChildren).toHaveLength(1);
   });
 
   it('should correctly set child event', () => {

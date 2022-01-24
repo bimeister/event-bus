@@ -9,7 +9,7 @@ import {
   PayloadType,
   RecipientCallback,
   WrappedEvent
-} from 'packages/internal';
+} from '@bimeister/event-bus.internal';
 
 export class EventBus {
   private readonly eventStream: EventStream = new EventStream();

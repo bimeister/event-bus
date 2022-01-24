@@ -1,6 +1,7 @@
+import { WrappedEvent } from '@bimeister/event-bus.internal';
+import { VOID } from '@bimeister/utilities';
 import { from } from 'rxjs';
 import { toArray } from 'rxjs/operators';
-import { VOID, WrappedEvent } from './../../../packages/internal';
 import { filterRelativeTo } from './filter-relative-to.operator';
 import { mapToEventPayload } from './map-to-event-payload.operator';
 

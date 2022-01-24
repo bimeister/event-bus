@@ -1,4 +1,4 @@
-import { VOID } from 'packages/internal';
+import { VOID } from '@bimeister/utilities';
 import {
   EntryType,
   PerformanceEntry,

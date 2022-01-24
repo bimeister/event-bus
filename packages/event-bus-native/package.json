@@ -1,11 +1,13 @@
 {
-  "name": "@workspaces/event-bus-native",
+  "name": "@bimeister/event-bus.native",
   "private": true,
   "scripts": {
     "barrel": "barrelsby --config=\"./../barrelsby.json\" --directory=\"./src\"",
     "test": "jest --config ./../jest.config.ts --passWithNoTests --selectProjects native"
   },
-  "dependencies": {
-    "@bimeister/utilities": "0.2.0-799fc7ca-dev"
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
   }
 }

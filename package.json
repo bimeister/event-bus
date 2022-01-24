@@ -15,11 +15,9 @@
     "autofix": "npm run lint:fix && npm run prettier:format",
     "cspell:check": "cspell ./packages/**/* --config cspell.json"
   },
-  "optionalDependencies": {
-    "rxjs": "^6.0.0"
-  },
   "devDependencies": {
-    "@bimeister/build-cli": "0.1.0-c869ab81",
+    "@bimeister/build-cli": "0.1.0-f993862d",
+    "@bimeister/utilities": "0.2.0-33cf4ecd-dev",
     "@types/jest": "^27.0.0",
     "@types/node": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "4.28.2",
@@ -53,8 +51,5 @@
     "packages/rxjs-operators",
     "packages/testing",
     "packages/utilities"
-  ],
-  "dependencies": {
-    "@bimeister/utilities": "0.2.0-db028c77-dev"
-  }
+  ]
 }

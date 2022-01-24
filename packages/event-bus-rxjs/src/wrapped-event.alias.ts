@@ -1,1 +1,1 @@
-export { WrappedEvent } from 'packages/internal';
+export { WrappedEvent } from '@bimeister/event-bus.internal';

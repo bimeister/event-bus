@@ -10,11 +10,10 @@
     "downlevelIteration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM"],
     "importHelpers": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "locale": "en",
-    "module": "UMD",
     "moduleResolution": "Node",
     "newLine": "lf",
     "noUnusedLocals": true,
@@ -25,12 +24,26 @@
     "sourceMap": false,
     "strict": true,
     "skipLibCheck": true,
-    "target": "ES6",
     "types": ["jest", "node"],
     "typeRoots": ["node_modules/@types"],
     "importsNotUsedAsValues": "error",
-    "allowUnreachableCode": false
+    "allowUnreachableCode": false,
+    "target": "ESNext",
+    "module": "ESNext",
+    "paths": {
+      "@bimeister/event-bus.native": ["./packages/event-bus-native/src/index.ts"],
+      "@bimeister/event-bus.rxjs": ["./packages/event-bus-rxjs/src/index.ts"],
+      "@bimeister/event-bus.internal": ["./packages/internal/src/index.ts"],
+      "@bimeister/event-bus.rxjs-operators": ["./packages/rxjs-operators/src/index.ts"],
+      "@bimeister/event-bus.testing": ["./packages/testing/src/index.ts"]
+    }
   },
-  "exclude": ["node_modules"],
-  "include": ["./packages/**/index.ts"]
+  "exclude": ["node_modules", "*.spec.ts"],
+  "include": ["./**/*.ts"],
+  "ts-node": {
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "UMD"
+    }
+  }
 }

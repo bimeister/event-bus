@@ -1,5 +1,5 @@
 {
-  "name": "@workspaces/rxjs-operators",
+  "name": "@bimeister/event-bus.rxjs-operators",
   "private": true,
   "scripts": {
     "barrel": "barrelsby --config=\"./../barrelsby.json\" --directory=\"./src\"",
@@ -7,5 +7,10 @@
   },
   "dependencies": {
     "rxjs": "^6.6.0"
+  },
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    }
   }
 }
