@@ -29,7 +29,8 @@ describe('lineage.class.ts', () => {
     childLineage.setParent(parentLineage);
 
     expect(parentLineage).toBe(childLineage.getDirectParent());
-    expect(childLineage).toBe(parentLineage.getDirectChild());
+    expect(childLineage).toBe(parentLineage.getDirectChildren()[0]);
+    expect(parentLineage.getDirectChildren()).toHaveLength(1);
   });
 
   it('should correctly set child', () => {
@@ -39,7 +40,8 @@ describe('lineage.class.ts', () => {
     parentLineage.setChild(childLineage);
 
     expect(parentLineage).toBe(childLineage.getDirectParent());
-    expect(childLineage).toBe(parentLineage.getDirectChild());
+    expect(childLineage).toBe(parentLineage.getDirectChildren()[0]);
+    expect(parentLineage.getDirectChildren()).toHaveLength(1);
   });
 
   it('should keep parent-child consistency on parent set', () => {
@@ -49,7 +51,8 @@ describe('lineage.class.ts', () => {
     childLineage.setParent(parentLineage);
 
     expect(parentLineage).toBe(childLineage.getDirectParent());
-    expect(childLineage).toBe(parentLineage.getDirectChild());
+    expect(childLineage).toBe(parentLineage.getDirectChildren()[0]);
+    expect(parentLineage.getDirectChildren()).toHaveLength(1);
   });
 
   it('should throw error on try of parent replacement', () => {

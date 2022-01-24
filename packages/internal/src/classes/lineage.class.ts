@@ -1,6 +1,6 @@
 export class Lineage {
   private parentRef: Lineage | undefined;
-  private childRef: Lineage | undefined;
+  private readonly childrenRefs: Set<Lineage> = new Set<Lineage>();
 
   public setParent(parent: NonNullable<Lineage>): void {
     if (this.parentRef === parent) {
@@ -16,16 +16,11 @@ export class Lineage {
   }
 
   public setChild(child: NonNullable<Lineage>): void {
-    if (this.childRef === child) {
+    if (this.childrenRefs.has(child)) {
       return;
     }
 
-    if (this.childRef !== undefined) {
-      throw new Error('[Lineage] child is already set');
-    }
-
-    this.childRef = child;
-
+    this.childrenRefs.add(child);
     child.setParent(this);
   }
 
@@ -33,8 +28,8 @@ export class Lineage {
     return this.parentRef;
   }
 
-  public getDirectChild(): Lineage | undefined {
-    return this.childRef;
+  public getDirectChildren(): Lineage[] {
+    return Array.from(this.childrenRefs);
   }
 
   public getAllParents(): Lineage[] {
@@ -53,17 +48,23 @@ export class Lineage {
   }
 
   public getAllChildren(): Lineage[] {
-    const children: Lineage[] = [];
+    const allChildren: Set<Lineage> = new Set<Lineage>();
 
-    let incomingChild: Lineage | undefined = this.childRef;
-    do {
-      if (incomingChild === undefined) {
-        break;
-      }
-      children.push(incomingChild);
-      incomingChild = incomingChild.childRef;
-    } while (incomingChild !== undefined);
+    let currentLevelChildrenSet: Set<Lineage> = this.childrenRefs;
+    while (currentLevelChildrenSet.size !== 0) {
+      const currentLevelChildren: Lineage[] = Array.from(currentLevelChildrenSet);
 
-    return children;
+      currentLevelChildren.forEach((child: Lineage) => {
+        allChildren.add(child);
+      });
+
+      const currentLevelGrandChildren: Lineage[] = currentLevelChildren
+        .map((child: Lineage) => child.getDirectChildren())
+        .flat(1);
+
+      currentLevelChildrenSet = new Set<Lineage>(currentLevelGrandChildren);
+    }
+
+    return Array.from(allChildren);
   }
 }
