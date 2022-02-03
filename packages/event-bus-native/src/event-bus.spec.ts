@@ -1,6 +1,6 @@
 import { Listener, PayloadType, WrappedEvent } from '@bimeister/event-bus.internal';
-import { MeasureObserver } from '@bimeister/event-bus.testing';
 import { getShuffledArray, VOID } from '@bimeister/utilities';
+import { MeasureObserver } from '@bimeister/utilities/performance';
 import { performance, PerformanceEntry, PerformanceObserver } from 'perf_hooks';
 import { EventBus } from './event-bus.class';
 
