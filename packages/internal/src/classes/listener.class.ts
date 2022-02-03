@@ -11,36 +11,34 @@ import type { EventStream } from './event-stream.class';
  */
 export class Listener {
   public get isActive(): boolean {
-    return this.#isActive;
+    return this.shouldEmitValues;
   }
 
-  /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-  #isActive: boolean = false;
-  #recipientCallback: Nullable<RecipientCallback> = undefined;
-  /* eslint-enable @typescript-eslint/explicit-member-accessibility */
+  private shouldEmitValues: boolean = false;
+  private recipientCallback: Nullable<RecipientCallback> = undefined;
 
   constructor(private readonly eventStream: EventStream) {}
 
   public [applyRecipientCallbackKey](recipientCallback: RecipientCallback): void {
-    if (typeof this.#recipientCallback === 'function') {
+    if (typeof this.recipientCallback === 'function') {
       throw new Error('[EventBus] callback already exists.');
     }
 
-    this.#recipientCallback = recipientCallback;
-    this.#isActive = true;
+    this.recipientCallback = recipientCallback;
+    this.shouldEmitValues = true;
   }
 
   public stop(): void {
-    if (!this.#isActive) {
+    if (!this.shouldEmitValues) {
       return;
     }
 
-    this.#isActive = false;
+    this.shouldEmitValues = false;
 
-    if (typeof this.#recipientCallback !== 'function') {
+    if (typeof this.recipientCallback !== 'function') {
       return;
     }
 
-    this.eventStream.unsubscribe(this.#recipientCallback);
+    this.eventStream.unsubscribe(this.recipientCallback);
   }
 }
