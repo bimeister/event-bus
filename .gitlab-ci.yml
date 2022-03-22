@@ -21,7 +21,7 @@ Dependencies:
   interruptible: true
   allow_failure: false
   script:
-    - npm install
+    - npm ci
     - npm run barrel
   cache:
     key: dependencies
