@@ -10,7 +10,7 @@ import {
 } from '@bimeister/utilities/build';
 import { getAllNestedFilePaths } from '@bimeister/utilities/filesystem';
 import { build, BuildOptions } from 'esbuild';
-import { readFile, rm } from 'fs/promises';
+import { readFile, rm, writeFile } from 'fs/promises';
 
 const distFolderPath: string = `${__dirname}/dist`;
 const packagesFolderPath: string = `${__dirname}/packages`;
@@ -120,7 +120,32 @@ async function generateTypings(sourceFilesDataByPackageName: Map<string, SourceF
       inputPath: mainFilePath,
       outputPath: bundleTypingsFilePath
     });
+
+    if (packageName === 'rxjs-operators') {
+      await patchOperatorsTypings(bundleTypingsFilePath);
+    }
   });
+}
+
+async function patchOperatorsTypings(typingsFilePath: string): Promise<void> {
+  const fileContent: string = await readFile(typingsFilePath, { encoding: 'utf8' });
+
+  const declaredClassesNames: string[] = Array.from(
+    new Set<string>(
+      fileContent
+        .split('\n')
+        .filter((substring: string) => substring.includes('declare class'))
+        .map((classDeclarationString: string) =>
+          classDeclarationString.replace('declare class ', '').replace(new RegExp(/(<.*)? .*{/g), '')
+        )
+    )
+  );
+
+  const updatedFileContent: string = `
+import { ${declaredClassesNames.join(', ')} } from './../rxjs';
+${fileContent}`.replace(new RegExp(/^declare class .*{(\s*\n.*)*^}/gm), '');
+
+  await writeFile(typingsFilePath, updatedFileContent, { encoding: 'utf8' });
 }
 
 async function generatePackageJson(

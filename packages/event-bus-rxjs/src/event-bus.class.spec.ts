@@ -68,6 +68,10 @@ describe('event-bus.class.ts', () => {
     eventBus.dispatch(new WrappedEvent(null));
   });
 
+  it('should throw error if dispatch arguments are invalid', () => {
+    expect(() => eventBus.dispatch({ payloadType: PayloadType.Native }, 'sample' as any)).toThrowError();
+  });
+
   it('should use native EventBus under the hood', () => {
     const nativeEventBus: NativeEventBus = eventBus['nativeEventBus'];
     expect(nativeEventBus).toBeInstanceOf(NativeEventBus);

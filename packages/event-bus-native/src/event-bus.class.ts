@@ -16,7 +16,6 @@ export class EventBus {
 
   public dispatch<T>(input: T, options?: Options.Native): void;
   public dispatch<T>(input: WrappedEvent<T>, options: Options.Wrapped): void;
-  public dispatch<T>(input: T | WrappedEvent<T>, options: Options.Unified): void;
   public dispatch<T>(
     input: T | WrappedEvent<T>,
     options: Options.Unified = {
@@ -34,7 +33,6 @@ export class EventBus {
 
   public listen(callback: EventCallback.Native, options?: Options.Native): Listener;
   public listen(callback: EventCallback.Wrapped, options: Options.Wrapped): Listener;
-  public listen(callback: EventCallback.Unified, options: Options.Unified): Listener;
   public listen(
     callback: EventCallback.Unified,
     options: Options.Unified = {
