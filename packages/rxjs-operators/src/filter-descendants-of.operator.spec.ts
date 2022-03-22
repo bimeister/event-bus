@@ -2,10 +2,10 @@ import { WrappedEvent } from '@bimeister/event-bus.internal';
 import { VOID } from '@bimeister/utilities';
 import { from } from 'rxjs';
 import { toArray } from 'rxjs/operators';
-import { filterChildrenOf } from './filter-children-of.operator';
+import { filterDescendantsOf } from './filter-descendants-of.operator';
 import { mapToEventPayload } from './map-to-event-payload.operator';
 
-describe('filter-children-of.operator.ts', () => {
+describe('filter-descendants-of.operator.ts', () => {
   let inputPayloads: number[];
   let inputEvents: WrappedEvent[];
   let trashedInputEvents: WrappedEvent[];
@@ -27,10 +27,10 @@ describe('filter-children-of.operator.ts', () => {
     trashedInputEvents = inputEvents.map((inputEvent: WrappedEvent) => [inputEvent, new WrappedEvent(NaN)]).flat(1);
   });
 
-  it('should pass only data that has child relations to event', (doneCallback: jest.DoneCallback) => {
+  it('should pass only data that is descendant to event', (doneCallback: jest.DoneCallback) => {
     const rootEvent: WrappedEvent = inputEvents[0];
     from(trashedInputEvents)
-      .pipe(filterChildrenOf(rootEvent), mapToEventPayload(), toArray())
+      .pipe(filterDescendantsOf(rootEvent), mapToEventPayload(), toArray())
       .subscribe((response: unknown[]) => {
         expect(response).toEqual(inputPayloads.filter((_: unknown, index: number) => index !== 0));
         expect(response).toHaveLength(inputEvents.length - 1);
@@ -41,7 +41,7 @@ describe('filter-children-of.operator.ts', () => {
   it('should not pass anything if there is no relative events', (doneCallback: jest.DoneCallback) => {
     const rootEvent: WrappedEvent = new WrappedEvent(0x000000);
     from(trashedInputEvents)
-      .pipe(filterChildrenOf(rootEvent), mapToEventPayload(), toArray())
+      .pipe(filterDescendantsOf(rootEvent), mapToEventPayload(), toArray())
       .subscribe((response: unknown[]) => {
         expect(response).toEqual([]);
         doneCallback();
@@ -51,7 +51,7 @@ describe('filter-children-of.operator.ts', () => {
   it('should not pass initial event', (doneCallback: jest.DoneCallback) => {
     const rootEvent: WrappedEvent = inputEvents[0];
     from(inputEvents)
-      .pipe(filterChildrenOf(rootEvent), mapToEventPayload(), toArray())
+      .pipe(filterDescendantsOf(rootEvent), mapToEventPayload(), toArray())
       .subscribe((response: unknown) => {
         expect(response).toEqual(inputPayloads.filter((_: unknown, index: number) => index !== 0));
         expect(response).toHaveLength(inputEvents.length - 1);

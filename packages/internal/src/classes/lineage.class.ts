@@ -1,6 +1,6 @@
 export class Lineage {
   private parentRef: Lineage | undefined;
-  private readonly childrenRefs: Set<Lineage> = new Set<Lineage>();
+  private readonly directChildrenRefs: Set<Lineage> = new Set<Lineage>();
 
   public setParent(parent: NonNullable<Lineage>): void {
     if (this.parentRef === parent) {
@@ -16,11 +16,11 @@ export class Lineage {
   }
 
   public setChild(child: NonNullable<Lineage>): void {
-    if (this.childrenRefs.has(child)) {
+    if (this.directChildrenRefs.has(child)) {
       return;
     }
 
-    this.childrenRefs.add(child);
+    this.directChildrenRefs.add(child);
     child.setParent(this);
   }
 
@@ -29,10 +29,10 @@ export class Lineage {
   }
 
   public getDirectChildren(): Lineage[] {
-    return Array.from(this.childrenRefs);
+    return Array.from(this.directChildrenRefs);
   }
 
-  public getAllParents(): Lineage[] {
+  public getAllAncestors(): Lineage[] {
     const parents: Lineage[] = [];
 
     let incomingParent: Lineage | undefined = this.parentRef;
@@ -47,10 +47,10 @@ export class Lineage {
     return parents;
   }
 
-  public getAllChildren(): Lineage[] {
+  public getAllDescendants(): Lineage[] {
     const allChildren: Set<Lineage> = new Set<Lineage>();
 
-    let currentLevelChildrenSet: Set<Lineage> = this.childrenRefs;
+    let currentLevelChildrenSet: Set<Lineage> = this.directChildrenRefs;
     while (currentLevelChildrenSet.size !== 0) {
       const currentLevelChildren: Lineage[] = Array.from(currentLevelChildrenSet);
 
