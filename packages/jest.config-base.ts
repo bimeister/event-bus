@@ -23,7 +23,14 @@ const transpilingOptions: Config.InitialOptions = {
 
 const baseConfig: Config.InitialOptions = {
   ...transpilingOptions,
-
+  coverageThreshold: {
+    global: {
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      statements: 100
+    }
+  },
   clearMocks: true,
   verbose: true,
   rootDir: './',

@@ -8,11 +8,9 @@ import { filter } from 'rxjs/operators';
  * Initial event is included.
  * All children from all generations are included.
  */
-export function filterRelativeTo<T>(initialEvent: WrappedEvent<T>): OperatorFunction<WrappedEvent<T>, WrappedEvent<T>> {
-  return (source: Observable<WrappedEvent<T>>): Observable<WrappedEvent<T>> =>
+export function filterRelativeTo(initialEvent: WrappedEvent): OperatorFunction<WrappedEvent, WrappedEvent> {
+  return (source: Observable<WrappedEvent>): Observable<WrappedEvent> =>
     source.pipe(
-      filter(
-        (wrappedEvent: WrappedEvent<T>) => wrappedEvent === initialEvent || wrappedEvent.isDescendantOf(initialEvent)
-      )
+      filter((wrappedEvent: WrappedEvent) => wrappedEvent === initialEvent || wrappedEvent.isDescendantOf(initialEvent))
     );
 }

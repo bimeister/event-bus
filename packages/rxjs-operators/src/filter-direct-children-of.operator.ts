@@ -7,9 +7,7 @@ import { filter } from 'rxjs/operators';
  * Passes only events that are direct children to initial event.
  * Initial event is excluded.
  */
-export function filterDirectChildrenOf<T>(
-  initialEvent: WrappedEvent<T>
-): OperatorFunction<WrappedEvent<T>, WrappedEvent<T>> {
-  return (source: Observable<WrappedEvent<T>>): Observable<WrappedEvent<T>> =>
-    source.pipe(filter((wrappedEvent: WrappedEvent<T>) => wrappedEvent.isChildOf(initialEvent)));
+export function filterDirectChildrenOf(initialEvent: WrappedEvent): OperatorFunction<WrappedEvent, WrappedEvent> {
+  return (source: Observable<WrappedEvent>): Observable<WrappedEvent> =>
+    source.pipe(filter((wrappedEvent: WrappedEvent) => wrappedEvent.isChildOf(initialEvent)));
 }
