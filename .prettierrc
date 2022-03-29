@@ -4,8 +4,6 @@
   "cursorOffset": 0,
   "endOfLine": "lf",
   "filepath": "none",
-  "jsxBracketSameLine": false,
-  "jsxSingleQuote": true,
   "printWidth": 120,
   "proseWrap": "always",
   "semi": true,
