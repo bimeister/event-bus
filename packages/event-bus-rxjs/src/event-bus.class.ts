@@ -22,13 +22,15 @@ export class EventBus {
     }
   ): Observable<WrappedEvent<unknown> | unknown> {
     if (isOptionsNative(options)) {
+      const response$: Observable<unknown> = this.listen(options);
       this.nativeEventBus.dispatch(input, options);
-      return this.listen(options);
+      return response$;
     }
 
     if (input instanceof WrappedEvent && isOptionsWrapped(options)) {
+      const response$: Observable<WrappedEvent<unknown>> = this.listen(options);
       this.nativeEventBus.dispatch(input, options);
-      return this.listen(options);
+      return response$;
     }
 
     throw new Error('@bimeister/event-bus/rxjs: dispatch arguments are invalid');

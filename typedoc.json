@@ -1,9 +1,16 @@
 {
+  "$schema": "https://typedoc.org/schema.json",
   "entryPoints": [
     "./packages/event-bus-native/src/index.ts",
     "./packages/event-bus-rxjs/src/index.ts",
     "./packages/internal/src/index.ts",
     "./packages/rxjs-operators/src/index.ts"
   ],
-  "out": "docs"
+  "entryPointStrategy": "Resolve",
+  "out": "docs",
+  "tsconfig": "./tsconfig.json",
+  "exclude": "**/**.spec.ts",
+  "excludeInternal": false,
+  "excludePrivate": false,
+  "excludeProtected": false
 }
