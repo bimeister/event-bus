@@ -2,7 +2,7 @@
 !/.gitlab/
 /.vscode/
 coverage/
-/docs/
+/docs-dist/
 /deploy/
 /dist/
 node_modules/

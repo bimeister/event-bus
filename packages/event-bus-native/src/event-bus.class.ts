@@ -14,7 +14,7 @@ import {
 /**
  * @description
  * Data dispatch / listen provider written in pure JavaScript (TypeScript).
- * Each EventBus is isolated from others. — Multiple EvenBus instances could be used in single application.
+ * Each EventBus is isolated from others. — Multiple EvensBus instances could be used in single application.
  */
 export class EventBus {
   private readonly eventStream: EventStream = new EventStream();

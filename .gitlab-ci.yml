@@ -132,14 +132,12 @@ pages:
     - 'Dependencies'
   interruptible: false
   allow_failure: true
-  # only:
-  #   - master
-  except:
+  only:
     - master
   when: always
   script:
     - npm run build:docs
-    - mv docs public
+    - mv docs-dist public
   artifacts:
     paths:
       - public

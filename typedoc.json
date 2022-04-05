@@ -7,10 +7,16 @@
     "./packages/rxjs-operators/src/index.ts"
   ],
   "entryPointStrategy": "Resolve",
-  "out": "docs",
+  "out": "./docs-dist",
   "tsconfig": "./tsconfig.json",
   "exclude": "**/**.spec.ts",
   "excludeInternal": false,
   "excludePrivate": false,
-  "excludeProtected": false
+  "excludeProtected": false,
+  "readme": "./README.md",
+  "name": "@bimeister/event-bus",
+  "disableSources": true,
+  "categorizeByGroup": true,
+  "sort": ["source-order"],
+  "cleanOutputDir": true
 }

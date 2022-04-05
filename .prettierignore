@@ -1,6 +1,6 @@
 /.*/
 /dist/
-/docs/
+/docs-dist/
 /deploy/
 /node_modules/
 /coverage/
