@@ -65,10 +65,11 @@ Test:
   stage: check
   needs: ['Dependencies']
   interruptible: true
-  allow_failure: true # Над этим работаем.) Проблема та же, что в Pupakit
+  allow_failure: false
   script:
     - npm run test:ci
   artifacts:
+    name: 'code-coverage'
     when: always
     reports:
       junit:
