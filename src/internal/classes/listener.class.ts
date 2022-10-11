@@ -27,13 +27,18 @@ export class Listener {
     }
 
     this.#recipientCallback = recipientCallback;
+    this.#isActive = true;
   }
 
   public stop(): void {
+    if (!this.#isActive) {
+      throw new Error('[EventBus] listener is already stopped.');
+    }
+
     this.#isActive = false;
 
     if (typeof this.#recipientCallback !== 'function') {
-      throw new Error('[EventBus] cannot unsubscribe from invalid listener.');
+      return;
     }
 
     this.eventStream.unsubscribe(this.#recipientCallback);

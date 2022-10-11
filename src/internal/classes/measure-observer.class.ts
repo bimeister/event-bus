@@ -8,9 +8,15 @@ import {
 import { VOID } from '../constants/void.const';
 
 type MeasureObserverCallback = (observer: PerformanceObserver, targetEntry: PerformanceEntry) => void;
+enum PERFORMANCE_MARK {
+  Start = 'Start',
+  End = 'End'
+}
 
 export class MeasureObserver {
   private readonly performanceObserver: PerformanceObserver;
+
+  public static readonly defaultMarks: typeof PERFORMANCE_MARK = PERFORMANCE_MARK;
   private static readonly entryType: EntryType = 'measure';
 
   constructor(measureName: string) {
