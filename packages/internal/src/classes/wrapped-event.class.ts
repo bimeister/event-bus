@@ -23,4 +23,10 @@ export class WrappedEvent<T = unknown> {
   public isChildOf(targetEvent: WrappedEvent): boolean {
     return targetEvent.lineage.getAllChildren().includes(this.lineage);
   }
+
+  public createChild<K>(payload: K): WrappedEvent<K> {
+    const child: WrappedEvent<K> = new WrappedEvent(payload);
+    this.setChild(child);
+    return child;
+  }
 }
