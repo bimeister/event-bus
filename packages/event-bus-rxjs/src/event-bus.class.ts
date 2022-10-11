@@ -1,6 +1,7 @@
 import {
   EventCallback,
   isOptionsNative,
+  isOptionsWrapped,
   Listener,
   Options,
   PayloadType,
@@ -14,20 +15,27 @@ export class EventBus {
 
   public dispatch<T>(input: T, options?: Options.Native): Observable<unknown>;
   public dispatch<T>(input: WrappedEvent<T>, options: Options.Wrapped): Observable<WrappedEvent<unknown>>;
-  public dispatch<T>(input: T | WrappedEvent<T>, options: Options.Unified): Observable<WrappedEvent<unknown> | unknown>;
   public dispatch<T>(
     input: T | WrappedEvent<T>,
     options: Options.Unified = {
       payloadType: PayloadType.Native
     }
   ): Observable<WrappedEvent<unknown> | unknown> {
-    this.nativeEventBus.dispatch(input, options);
-    return this.listen(options);
+    if (isOptionsNative(options)) {
+      this.nativeEventBus.dispatch(input, options);
+      return this.listen(options);
+    }
+
+    if (input instanceof WrappedEvent && isOptionsWrapped(options)) {
+      this.nativeEventBus.dispatch(input, options);
+      return this.listen(options);
+    }
+
+    throw new Error('@bimeister/event-bus/rxjs: dispatch arguments are invalid');
   }
 
   public listen(options?: Options.Native): Observable<unknown>;
   public listen(options: Options.Wrapped): Observable<WrappedEvent<unknown>>;
-  public listen(options: Options.Unified): Observable<WrappedEvent<unknown> | unknown>;
   public listen(
     options: Options.Unified = {
       payloadType: PayloadType.Native
