@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "scripts": {
+    "barrel": "echo 1"
+  }
+}
