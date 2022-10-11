@@ -1,20 +1,29 @@
 import type { Config } from '@jest/types';
 
 const config: Config.InitialOptions = {
-  verbose: true,
   collectCoverage: true,
-  roots: ['<rootDir>/src'],
-  transform: {
-    '^.+\\.ts$': 'ts-jest'
-  },
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.ts$',
-  moduleFileExtensions: ['ts', 'js', 'json'],
+  coverageDirectory: 'coverage',
   globals: {
     'ts-jest': {
       tsconfig: 'tsconfig.spec.json'
     }
   },
-  reporters: [['jest-junit', { suiteName: 'Unit Tests', outputDirectory: 'coverage' }]],
-  coverageDirectory: 'coverage'
+  moduleFileExtensions: ['js', 'json', 'ts'],
+  modulePathIgnorePatterns: [],
+  reporters: [
+    [
+      'jest-junit',
+      {
+        outputDirectory: 'coverage',
+        suiteName: 'Unit Tests'
+      }
+    ]
+  ],
+  roots: ['<rootDir>/src'],
+  testRegex: '(\\.|/)(spec)\\.ts$',
+  transform: {
+    '^.+\\.ts$': 'ts-jest'
+  },
+  verbose: true
 };
 export default config;

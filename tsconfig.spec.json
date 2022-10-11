@@ -4,7 +4,9 @@
     "outDir": "../out-tsc/spec",
     "module": "CommonJS",
     "types": ["jest", "node"],
-    "lib": ["DOM", "ESNext"]
+    "lib": ["DOM", "ESNext"],
+    "sourceMap": true,
+    "strict": false
   },
   "extends": "./tsconfig.json",
   "include": ["**/*.spec.ts", "**/*.d.ts"]

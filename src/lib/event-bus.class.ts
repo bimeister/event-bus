@@ -10,20 +10,14 @@ export class EventBus {
   private readonly currentEvent$: Subject<BusEventBase> = new Subject<BusEventBase>();
   private readonly currentError$: Subject<BusErrorEventBase> = new Subject<BusErrorEventBase>();
 
-  public catchEvents<T>(): Observable<BusEventBase<T>>;
-  public catchEvents(): Observable<BusEventBase>;
-  public catchEvents(predicate: CatchPredicate<BusEventBase>): Observable<BusEventBase>;
-  public catchEvents(predicate?: CatchPredicate<BusEventBase>): Observable<BusEventBase> {
+  public catchEvents<T>(predicate?: CatchPredicate<BusEventBase<T>>): Observable<BusEventBase<T>> {
     if (isNil(predicate) || typeof predicate !== 'function') {
       return this.currentEvent$;
     }
     return this.currentEvent$.pipe(filter((event: BusEventBase) => predicate(event)));
   }
 
-  public catchErrors<T>(): Observable<BusErrorEventBase<T>>;
-  public catchErrors(): Observable<BusErrorEventBase>;
-  public catchErrors(predicate: CatchPredicate<BusErrorEventBase>): Observable<BusErrorEventBase>;
-  public catchErrors(predicate?: CatchPredicate<BusErrorEventBase>): Observable<BusErrorEventBase> {
+  public catchErrors<T>(predicate?: CatchPredicate<BusErrorEventBase<T>>): Observable<BusErrorEventBase<T>> {
     if (isNil(predicate) || typeof predicate !== 'function') {
       return this.currentError$;
     }
@@ -35,12 +29,8 @@ export class EventBus {
     return merge(this.currentEvent$, this.currentError$);
   }
 
-  public dispatch<T>(event: BusEventBase<T>): void;
-  public dispatch(event: BusEventBase): void;
-  public dispatch(events: BusEventBase[]): void;
-  public dispatch<T>(error: BusErrorEventBase<T>): void;
-  public dispatch(error: BusErrorEventBase): void;
-  public dispatch(errors: BusErrorEventBase[]): void;
+  public dispatch<T>(event: BusEventBase<T> | BusErrorEventBase<T>): void;
+  public dispatch(event: BusEventBase | BusEventBase[] | BusErrorEventBase | BusErrorEventBase[]): void;
   public dispatch(input: DispatchInputBase | DispatchInputBase[]): void {
     if (Array.isArray(input)) {
       this.dispatchEachItem(input);

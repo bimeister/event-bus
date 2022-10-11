@@ -1,4 +1,4 @@
-import { deleteFolderWithFiles } from '@bimeister/utilities/commonjs/common';
+import { deleteFolderWithFiles } from '@bimeister/utilities';
 import type { TaskFunction } from 'gulp';
 import { cwd } from 'process';
 
