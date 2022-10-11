@@ -14,7 +14,11 @@ export class WrappedEvent<T = unknown> {
   }
 
   public isChildOf(targetEvent: WrappedEvent): boolean {
-    return targetEvent.lineage.getAllChildren().includes(this.lineage);
+    return targetEvent.lineage.getDirectChildren().includes(this.lineage);
+  }
+
+  public isDescendantOf(targetEvent: WrappedEvent): boolean {
+    return targetEvent.lineage.getAllDescendants().includes(this.lineage);
   }
 
   public createChild<K>(payload: K): WrappedEvent<K> {

@@ -24,7 +24,7 @@ describe('wrapped-event.class.ts', () => {
     expect(childEvent.lineage.getDirectParent()).toBe(targetEvent.lineage);
   });
 
-  it('should correctly detect children', () => {
+  it('should correctly detect descendants', () => {
     const greatGreatGrandEvent: WrappedEvent = new Array(100).fill(VOID).reduce((childEvent: WrappedEvent) => {
       const parentEvent: WrappedEvent = new WrappedEvent(null);
       childEvent.setParent(parentEvent);
@@ -32,13 +32,13 @@ describe('wrapped-event.class.ts', () => {
       return parentEvent;
     }, targetEvent);
 
-    expect(targetEvent.isChildOf(greatGreatGrandEvent)).toBe(true);
+    expect(targetEvent.isDescendantOf(greatGreatGrandEvent)).toBe(true);
   });
 
-  it('should correctly create child events', () => {
+  it('should correctly create descendants events', () => {
     const parentEvent: WrappedEvent = new WrappedEvent(null);
     const childEvent: WrappedEvent = parentEvent.createChild(undefined);
 
-    expect(childEvent.isChildOf(parentEvent)).toBe(true);
+    expect(childEvent.isDescendantOf(parentEvent)).toBe(true);
   });
 });

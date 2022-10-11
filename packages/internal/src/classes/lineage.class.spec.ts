@@ -1,24 +1,24 @@
 import { Lineage } from './lineage.class';
 
 describe('lineage.class.ts', () => {
-  it('should keep parent-child consistency', () => {
-    const parentLineage: Lineage = new Lineage();
+  it('should keep ancestor-descendant consistency', () => {
+    const ancestorLineage: Lineage = new Lineage();
     const targetLineage: Lineage = new Lineage();
-    const childLineage: Lineage = new Lineage();
+    const descendantLineage: Lineage = new Lineage();
 
-    targetLineage.setParent(parentLineage);
-    targetLineage.setChild(childLineage);
+    targetLineage.setParent(ancestorLineage);
+    targetLineage.setChild(descendantLineage);
 
-    const fromChildToParent: Lineage[] = [childLineage, ...childLineage.getAllParents()];
-    const fromChildToParentValidSequence: Lineage[] = [childLineage, targetLineage, parentLineage];
-    fromChildToParentValidSequence.forEach((validLineage: Lineage, index: number) => {
-      expect(fromChildToParent[index]).toBe(validLineage);
-    });
+    const fromDescendantToAncestor: Lineage[] = [descendantLineage, ...descendantLineage.getAllAncestors()];
+    const fromDescendantToAncestorValidSequence: Lineage[] = [descendantLineage, targetLineage, ancestorLineage];
+    fromDescendantToAncestorValidSequence.forEach((validLineage: Lineage, index: number) =>
+      expect(fromDescendantToAncestor[index]).toBe(validLineage)
+    );
 
-    const fromParentToChild: Lineage[] = [parentLineage, ...parentLineage.getAllChildren()];
-    const fromParentToChildValidSequence: Lineage[] = [parentLineage, targetLineage, childLineage];
-    fromParentToChildValidSequence.forEach((validLineage: Lineage, index: number) => {
-      expect(fromParentToChild[index]).toBe(validLineage);
+    const fromAncestorToDescendant: Lineage[] = [ancestorLineage, ...ancestorLineage.getAllDescendants()];
+    const fromAncestorToDescendantValidSequence: Lineage[] = [ancestorLineage, targetLineage, descendantLineage];
+    fromAncestorToDescendantValidSequence.forEach((validLineage: Lineage, index: number) => {
+      expect(fromAncestorToDescendant[index]).toBe(validLineage);
     });
   });
 
@@ -64,20 +64,19 @@ describe('lineage.class.ts', () => {
     const childLineage: Lineage = new Lineage();
 
     childLineage.setParent(parentLineage);
-
     const newParentLineage: Lineage = new Lineage();
     expect(() => childLineage.setParent(newParentLineage)).toThrowError();
   });
 
   it('should return empty parents list if there are none', () => {
     const targetLineage: Lineage = new Lineage();
-    const parents: Lineage[] = targetLineage.getAllParents();
+    const parents: Lineage[] = targetLineage.getAllAncestors();
     expect(parents).toEqual([]);
   });
 
-  it('should return empty children list if there are none', () => {
+  it('should return empty descendants list if there are none', () => {
     const targetLineage: Lineage = new Lineage();
-    const children: Lineage[] = targetLineage.getAllChildren();
-    expect(children).toEqual([]);
+    const descendants: Lineage[] = targetLineage.getAllDescendants();
+    expect(descendants).toEqual([]);
   });
 });
