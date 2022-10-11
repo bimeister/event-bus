@@ -101,7 +101,7 @@ export class EventBus {
 
   private dispatchEachItem(input: DispatchInputBase[], scheduler: Nullable<SchedulerLike> = asyncScheduler): void {
     of(...input)
-      .pipe(observeOnOptional(scheduler), subscribeOnOptional(scheduler), take(1))
+      .pipe(observeOnOptional(scheduler), subscribeOnOptional(scheduler), take(input.length))
       .subscribe((inputItem: DispatchInputBase) => {
         if (!EventBus.isDispatchInput(inputItem)) {
           return;
