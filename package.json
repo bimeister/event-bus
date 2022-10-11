@@ -23,12 +23,13 @@
     "prettier:format": "prettier --loglevel log --config ./.prettierrc --ignore-path ./.prettierignore --write \"./**/*.{json,js,ts}\"",
     "cspell:check": "cspell \"src/**/*.*\" --config=\"cspell.json\""
   },
-  "dependencies": {
-    "@bimeister/utilities": "^0.1.0-874b2e55",
+  "peerDependencies": {
+    "@bimeister/utilities": "^0.1.0",
     "rxjs": "^6.6.0"
   },
   "devDependencies": {
-    "@bimeister/build-cli": "^0.1.0-f91fe1ad",
+    "@bimeister/build-cli": "^0.1.0-b916fe5b",
+    "@bimeister/utilities": "^0.1.0-24d2e33e",
     "@types/gulp": "^4.0.8",
     "@types/jest": "^26.0.23",
     "@types/node": "^14.0.23",
