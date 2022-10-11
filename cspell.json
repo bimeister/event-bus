@@ -1,7 +1,7 @@
 {
   "version": "0.2",
   "language": "en",
-  "words": ["BIMeister", "barrelsby"],
+  "words": ["BIMeister", "barrelsby", "outdir"],
   "ignoreRegExpList": ["CStyleComment"],
   "ignorePaths": ["**/node_modules/**", "**/dist/**"],
   "dictionaries": ["en_us", "en-gb", "russian", "typescript", "node", "bash", "softwareTerms"],

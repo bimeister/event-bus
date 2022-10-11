@@ -1,7 +1,7 @@
+import { PayloadType, WrappedEvent } from '@bimeister/event-bus.internal';
+import { EventBus as NativeEventBus } from '@bimeister/event-bus.native';
 import { combineLatest, Observable } from 'rxjs';
 import { take, toArray } from 'rxjs/operators';
-import { EventBus as NativeEventBus } from './../../../packages/event-bus-native';
-import { PayloadType, WrappedEvent } from './../../../packages/internal';
 import { EventBus } from './event-bus.class';
 
 describe('event-bus.class.ts', () => {
@@ -40,9 +40,23 @@ describe('event-bus.class.ts', () => {
     eventBus.dispatch('sample');
   });
 
-  it('should data as is (PayloadType.Native)', (doneCallback: jest.DoneCallback) => {
+  it('should emit data as is (PayloadType.Native)', (doneCallback: jest.DoneCallback) => {
     eventBus
       .listen({ payloadType: PayloadType.Native })
+      .pipe(take(2), toArray())
+      .subscribe(([stringDispatchData, eventDispatchData]: unknown[]) => {
+        expect(stringDispatchData).not.toBeInstanceOf(WrappedEvent);
+        expect(eventDispatchData).toBeInstanceOf(WrappedEvent);
+        doneCallback();
+      });
+
+    eventBus.dispatch('sample');
+    eventBus.dispatch(new WrappedEvent(null));
+  });
+
+  it('should emit data as is (no arguments)', (doneCallback: jest.DoneCallback) => {
+    eventBus
+      .listen()
       .pipe(take(2), toArray())
       .subscribe(([stringDispatchData, eventDispatchData]: unknown[]) => {
         expect(stringDispatchData).not.toBeInstanceOf(WrappedEvent);

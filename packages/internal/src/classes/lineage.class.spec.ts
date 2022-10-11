@@ -29,8 +29,10 @@ describe('lineage.class.ts', () => {
     childLineage.setParent(parentLineage);
 
     expect(parentLineage).toBe(childLineage.getDirectParent());
-    expect(childLineage).toBe(parentLineage.getDirectChildren()[0]);
-    expect(parentLineage.getDirectChildren()).toHaveLength(1);
+
+    const directChildren: Lineage[] = parentLineage.getDirectChildren();
+    expect(childLineage).toBe(directChildren[0]);
+    expect(directChildren).toHaveLength(1);
   });
 
   it('should correctly set child', () => {
@@ -40,8 +42,10 @@ describe('lineage.class.ts', () => {
     parentLineage.setChild(childLineage);
 
     expect(parentLineage).toBe(childLineage.getDirectParent());
-    expect(childLineage).toBe(parentLineage.getDirectChildren()[0]);
-    expect(parentLineage.getDirectChildren()).toHaveLength(1);
+
+    const directChildren: Lineage[] = parentLineage.getDirectChildren();
+    expect(childLineage).toBe(directChildren[0]);
+    expect(directChildren).toHaveLength(1);
   });
 
   it('should keep parent-child consistency on parent set', () => {
@@ -63,16 +67,6 @@ describe('lineage.class.ts', () => {
 
     const newParentLineage: Lineage = new Lineage();
     expect(() => childLineage.setParent(newParentLineage)).toThrowError();
-  });
-
-  it('should throw error on try of child replacement', () => {
-    const parentLineage: Lineage = new Lineage();
-    const childLineage: Lineage = new Lineage();
-
-    parentLineage.setChild(childLineage);
-
-    const newChildLineage: Lineage = new Lineage();
-    expect(() => parentLineage.setChild(newChildLineage)).toThrowError();
   });
 
   it('should return empty parents list if there are none', () => {

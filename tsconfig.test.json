@@ -5,8 +5,8 @@
     "outDir": "../out-tsc/spec",
     "types": ["jest", "node"],
     "lib": ["DOM", "ESNext"],
-    "target": "ES6",
-    "module": "UMD",
+    "target": "ESNext",
+    "module": "CommonJS",
     "sourceMap": true
   },
   "extends": "./tsconfig.json",

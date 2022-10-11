@@ -1,4 +1,5 @@
-import { applyRecipientCallbackKey, RecipientCallback, VOID } from './../../../../packages/internal';
+import { applyRecipientCallbackKey, RecipientCallback } from '@bimeister/event-bus.internal';
+import { VOID } from '@bimeister/utilities/constants';
 import { EventStream } from './event-stream.class';
 import { Listener } from './listener.class';
 
