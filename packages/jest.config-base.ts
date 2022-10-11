@@ -16,7 +16,8 @@ const transpilingOptions: Config.InitialOptions = {
   errorOnDeprecated: true,
   extensionsToTreatAsEsm: ['.ts'],
   moduleNameMapper: {
-    '^@bimeister/utilities/.*$': '@bimeister/utilities'
+    '^@bimeister/utilities/performance$': '<rootDir>/../node_modules/@bimeister/utilities/performance/index.cjs',
+    '^@bimeister/utilities/.*$': '<rootDir>/../node_modules/@bimeister/utilities'
   }
 };
 
@@ -50,11 +51,6 @@ const baseConfig: Config.InitialOptions = {
       ...transpilingOptions,
       displayName: 'rxjs-operators',
       testRegex: '\\/rxjs-operators\\/src\\/.*\\.spec\\.ts$'
-    },
-    {
-      ...transpilingOptions,
-      displayName: 'testing',
-      testRegex: '\\/testing\\/src\\/.*\\.spec\\.ts$'
     }
   ],
   collectCoverageFrom: [
