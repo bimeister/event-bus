@@ -1,1 +1,1 @@
-export { EventBus } from './src/api';
+export { EventBus, WrappedEvent } from './src/api';
