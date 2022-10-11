@@ -17,7 +17,6 @@
     "cspell:check": "cspell ./packages/**/* --config cspell.json"
   },
   "devDependencies": {
-    "@bimeister/build-cli": "0.1.0-f993862d",
     "@bimeister/utilities": "0.2.0-920ed7f3-dev",
     "@types/jest": "^27.0.0",
     "@types/node": "^16.0.0",
