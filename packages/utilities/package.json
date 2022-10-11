@@ -1,0 +1,14 @@
+{
+  "name": "@bimeister/utilities",
+  "private": true,
+  "scripts": {
+    "barrel": "barrelsby --config=\"./../barrelsby.json\" --directory=\"./src\"",
+    "test": "exit 0"
+  },
+  "dependencies": {
+    "uuid": "~8.0.0"
+  },
+  "devDependencies": {
+    "@types/uuid": "~8.0.0"
+  }
+}

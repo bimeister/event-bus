@@ -4,54 +4,57 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "description": "BIMeister frontend event-bus",
   "scripts": {
-    "build-cli": "build-cli",
     "barrel": "npm run barrel --workspaces",
-    "compile:lib-esm2015": "tsc --project tsconfig.lib-esm2015.json",
-    "compile:lib-umd": "tsc --project tsconfig.lib-umd.json",
-    "compile:lib-typings": "tsc --project tsconfig.lib-typings.json",
-    "build": "yarn barrel && gulp build:compile-all",
-    "build:ci": "yarn barrel && gulp build:clean-up && gulp build:compile-all",
-    "build:docs": "yarn barrel && typedoc --options typedoc.json  --tsconfig tsconfig.docs.json --includeDeclarations --exclude \"**/*+(index|api|.spec|.e2e).ts\" --excludeNotExported --excludePrivate --excludeProtected --excludeExternals --stripInternal",
-    "autofix": "yarn run lint:debug && yarn run prettier:format && yarn run lint:inspect",
-    "lint:debug": "tslint --format prose --project tsconfig.json --fix",
-    "lint:inspect": "tslint --format stylish --project tsconfig.json && yarn run cspell:check",
-    "lint:codestyle": "yarn run prettier:check",
-    "test:each": "npm run test --workspaces",
-    "test:all": "jest --config ./packages/jest.config.ts --passWithNoTests",
+    "build": "ts-node ./build.ts",
+    "lint": "eslint --config ./.eslintrc ./packages/**/src/**/*.ts",
+    "lint:fix": "eslint --config ./.eslintrc ./packages/**/src/**/*.ts --fix",
+    "test": "jest --clearCache && jest --config ./packages/jest.config.ts --passWithNoTests --coverage true",
+    "test:ci": "jest --clearCache && jest --config ./packages/jest.config-pipeline.ts --passWithNoTests --coverage true",
     "prettier:check": "prettier --config ./.prettierrc --ignore-path ./.prettierignore --check \"./**/*.{json,js,ts}\"",
     "prettier:format": "prettier --loglevel log --config ./.prettierrc --ignore-path ./.prettierignore --write \"./**/*.{json,js,ts}\"",
-    "cspell:check": "cspell \"src/**/*.*\" --config=\"cspell.json\""
+    "autofix": "npm run lint:fix && npm run prettier:format",
+    "cspell:check": "cspell ./packages/**/* --config cspell.json"
   },
-  "peerDependencies": {
-    "@bimeister/utilities": "^0.1.0"
+  "dependencies": {
+    "uuid": "~8.0.0"
+  },
+  "optionalDependencies": {
+    "rxjs": "^6.6.0"
   },
   "devDependencies": {
     "@bimeister/build-cli": "0.1.0-c869ab81",
-    "@bimeister/utilities": "0.1.0-72c6467b",
-    "@types/gulp": "^4.0.8",
     "@types/jest": "~27.0.0",
     "@types/node": "~16.0.0",
+    "@typescript-eslint/eslint-plugin": "4.28.2",
+    "@typescript-eslint/parser": "4.28.2",
     "barrelsby": "^2.2.0",
-    "cspell": "^5.4.1",
-    "cspell-dict-russian": "^1.2.1",
-    "gulp": "^3.9.1",
+    "cspell": "~5.0.0",
+    "cspell-dict-russian": "~1.2.0",
+    "dts-bundle-generator": "^6.2.0",
+    "esbuild": "~0.14.0",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-ban": "^1.5.2",
+    "eslint-plugin-deprecation": "^1.2.1",
+    "eslint-plugin-editorconfig": "^3.2.0",
+    "eslint-plugin-import": "latest",
+    "eslint-plugin-jsdoc": "latest",
+    "eslint-plugin-prefer-arrow": "latest",
+    "eslint-plugin-prettier": "^4.0.0",
     "jest": "~27.0.0",
     "jest-junit": "~13.0.0",
-    "prettier": "^2.3.0",
-    "rxjs": "^6.6.0",
+    "prettier": "~2.5.0",
     "ts-jest": "~27.0.0",
     "ts-node": "~10.0.0",
+    "tslib": "~2.3.0",
     "tslint": "^6.1.2",
     "typescript": "~4.0.0"
-  },
-  "browser": {
-    "fs": false,
-    "path": false
   },
   "workspaces": [
     "packages/internal",
     "packages/native",
     "packages/rxjs",
-    "packages/testing"
+    "packages/testing",
+    "packages/utilities"
   ]
 }

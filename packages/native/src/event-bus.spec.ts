@@ -122,11 +122,11 @@ describe('event-bus.class.ts', () => {
     performance.measure(measureName, MeasureObserver.defaultMarks.Start, MeasureObserver.defaultMarks.End);
   }, 10_000);
 
-  it('should dispatch 1 million events faster then 3s (sequence)', (doneCallback: jest.DoneCallback) => {
+  it('should dispatch 1 million events faster then 5s (sequence)', (doneCallback: jest.DoneCallback) => {
     const measureName: string = 'Dispatch measure (sequence)';
 
     new MeasureObserver(measureName).observe((observer: PerformanceObserver, targetEntry: PerformanceEntry) => {
-      expect(targetEntry.duration).toBeLessThan(3000);
+      expect(targetEntry.duration).toBeLessThan(5000);
       observer.disconnect();
       doneCallback();
     });

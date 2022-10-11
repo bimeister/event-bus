@@ -8,6 +8,6 @@
     "target": "ESNext",
     "sourceMap": true
   },
-  "extends": "./../tsconfig.json",
+  "extends": "./tsconfig.json",
   "include": ["./packages/**/*.spec.ts"]
 }

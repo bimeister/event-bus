@@ -4,7 +4,6 @@ import baseConfig from './jest.config-base';
 const pipelineConfig: Config.InitialOptions = {
   ...baseConfig,
   collectCoverage: true,
-  coverageDirectory: '<rootDir>/../coverage',
   reporters: [
     [
       'jest-junit',
