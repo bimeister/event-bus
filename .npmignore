@@ -1,7 +1,7 @@
 /.*/
 !/.gitlab/
 /dist/
-/docs/
+/docs-dist/
 /coverage/
 /deploy/
 *.log

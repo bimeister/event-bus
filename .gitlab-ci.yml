@@ -93,7 +93,7 @@ NPM (dev):
   variables:
     TAG: 'dev'
   except:
-    - master
+    - main
   when: manual
   script:
     - node ./node_modules/@bimeister/build-cli/executable.js npm-package npmrc-prepare --npmrc_path="./.npmrc"
@@ -114,7 +114,7 @@ NPM (stable):
   variables:
     TAG: 'stable'
   only:
-    - master
+    - main
   when: always
   script:
     - node ./node_modules/@bimeister/build-cli/executable.js npm-package npmrc-prepare --npmrc_path="./.npmrc"
@@ -132,14 +132,12 @@ pages:
     - 'Dependencies'
   interruptible: false
   allow_failure: true
-  # only:
-  #   - master
-  except:
-    - master
+  only:
+    - main
   when: always
   script:
     - npm run build:docs
-    - mv docs public
+    - mv docs-dist public
   artifacts:
     paths:
       - public
