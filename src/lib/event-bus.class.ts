@@ -28,7 +28,7 @@ export class EventBus {
 
     const { predicate, scheduler }: CatcherArguments<T> = EventBus.getCatcherArguments<T>(inputArguments);
 
-    if (isNil(predicate) || typeof predicate !== 'function') {
+    if (typeof predicate !== 'function') {
       return this.currentEvent$.pipe(observeOnOptional(scheduler), subscribeOnOptional(scheduler));
     }
 
@@ -51,7 +51,7 @@ export class EventBus {
 
     const { predicate, scheduler }: CatcherArguments<T> = EventBus.getCatcherArguments<T>(inputArguments);
 
-    if (isNil(predicate) || typeof predicate !== 'function') {
+    if (typeof predicate !== 'function') {
       return this.currentError$.pipe(observeOnOptional(scheduler), subscribeOnOptional(scheduler));
     }
 
