@@ -1,0 +1,81 @@
+include:
+  - local: .gitlab/templates/common.template.yml
+
+stages:
+  - preinstall
+  - build
+  - check
+  - deploy
+
+Dependencies:
+  stage: preinstall
+  needs: []
+  interruptible: true
+  allow_failure: false
+  script:
+    - scripts/build.sh base_service
+
+Static files:
+  stage: build
+  needs: ['Dependencies']
+  interruptible: true
+  allow_failure: false
+  script:
+    - scripts/build.sh build_service
+
+Lint:
+  stage: check
+  needs: ['Dependencies']
+  interruptible: true
+  allow_failure: false
+  script:
+    - scripts/build.sh lint_service
+
+Test:
+  stage: check
+  needs: ['Dependencies']
+  interruptible: true
+  allow_failure: false
+  script:
+    - scripts/build.sh test_service
+    - scripts/cp-from-image.sh "pipeline=${PIPELINE_ID};commit=${GIT_COMMIT_HASH};service=test_service" coverage
+      coverage
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - coverage/junit.xml
+
+Code Style:
+  stage: check
+  needs: ['Dependencies']
+  interruptible: true
+  allow_failure: false
+  script:
+    - scripts/build.sh codestyle_service
+
+NPM (stable):
+  stage: deploy
+  needs: ['Static files', 'Test', 'Lint', 'Code Style']
+  interruptible: false
+  allow_failure: true
+  only:
+    - master
+  when: always
+  variables:
+    TAG: 'stable'
+  script:
+    - scripts/build.sh deploy_service
+
+NPM (dev):
+  stage: deploy
+  needs: ['Static files', 'Test', 'Lint', 'Code Style']
+  interruptible: false
+  allow_failure: true
+  except:
+    - master
+  when: manual
+  variables:
+    TAG: 'dev'
+  script:
+    - scripts/build.sh deploy_service
