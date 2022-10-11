@@ -8,21 +8,19 @@ describe('wrapped-event.class.ts', () => {
     targetEvent = new WrappedEvent(NaN);
   });
 
-  it('should correctly set parent event', (doneCallback: jest.DoneCallback) => {
+  it('should correctly set parent event', () => {
     const parentEvent: WrappedEvent = new WrappedEvent(null);
     targetEvent.setParent(parentEvent);
     expect(parentEvent.lineage.getDirectChild()).toBe(targetEvent.lineage);
-    doneCallback();
-  }, 10_000);
+  });
 
-  it('should correctly set descendant event', (doneCallback: jest.DoneCallback) => {
+  it('should correctly set child event', () => {
     const childEvent: WrappedEvent = new WrappedEvent(null);
-    targetEvent.setDescendant(childEvent);
+    targetEvent.setChild(childEvent);
     expect(childEvent.lineage.getDirectParent()).toBe(targetEvent.lineage);
-    doneCallback();
-  }, 10_000);
+  });
 
-  it('should correctly detect descendants', (doneCallback: jest.DoneCallback) => {
+  it('should correctly detect children', () => {
     const greatGreatGrandEvent: WrappedEvent = new Array(100).fill(VOID).reduce((childEvent: WrappedEvent) => {
       const parentEvent: WrappedEvent = new WrappedEvent(null);
       childEvent.setParent(parentEvent);
@@ -30,8 +28,6 @@ describe('wrapped-event.class.ts', () => {
       return parentEvent;
     }, targetEvent);
 
-    expect(targetEvent.isDescendantOf(greatGreatGrandEvent)).toBeTruthy();
-
-    doneCallback();
-  }, 10_000);
+    expect(targetEvent.isChildOf(greatGreatGrandEvent)).toBeTruthy();
+  });
 });

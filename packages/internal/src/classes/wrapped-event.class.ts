@@ -16,11 +16,11 @@ export class WrappedEvent<T = unknown> {
     this.lineage.setParent(parentEvent.lineage);
   }
 
-  public setDescendant(childEvent: WrappedEvent): void {
+  public setChild(childEvent: WrappedEvent): void {
     this.lineage.setChild(childEvent.lineage);
   }
 
-  public isDescendantOf(targetEvent: WrappedEvent): boolean {
+  public isChildOf(targetEvent: WrappedEvent): boolean {
     return targetEvent.lineage.getAllChildren().includes(this.lineage);
   }
 }

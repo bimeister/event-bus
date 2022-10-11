@@ -23,13 +23,13 @@ export class EventBus {
       payloadType: PayloadType.Native
     }
   ): void {
-    if (isNativeInputPayload(input, options)) {
-      const wrappedEvent: WrappedEvent = new WrappedEvent(input);
-      this.eventStream.emit(wrappedEvent);
+    if (!isNativeInputPayload(input, options)) {
+      this.eventStream.emit(input);
       return;
     }
 
-    this.eventStream.emit(input);
+    const wrappedEvent: WrappedEvent = new WrappedEvent(input);
+    this.eventStream.emit(wrappedEvent);
   }
 
   public listen(callback: EventCallback.Native, options?: Options.Native): Listener;
