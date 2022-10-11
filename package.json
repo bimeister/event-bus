@@ -50,6 +50,7 @@
     "packages/internal",
     "packages/native",
     "packages/rxjs",
+    "packages/rxjs-operators",
     "packages/testing",
     "packages/utilities"
   ]

@@ -43,6 +43,11 @@ const baseConfig: Config.InitialOptions = {
     },
     {
       ...transpilingOptions,
+      displayName: 'rxjs-operators',
+      testRegex: '\\/rxjs-operators\\/src\\/.*\\.spec\\.ts$'
+    },
+    {
+      ...transpilingOptions,
       displayName: 'testing',
       testRegex: '\\/testing\\/src\\/.*\\.spec\\.ts$'
     }
