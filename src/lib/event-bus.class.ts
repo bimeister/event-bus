@@ -1,6 +1,6 @@
 import { isNil } from '@bimeister/utilities';
-import { merge, Observable, Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { asyncScheduler, merge, Observable, Subject } from 'rxjs';
+import { filter, observeOn, subscribeOn } from 'rxjs/operators';
 import type { DispatchInputBase } from './../internal/classes/dispatch-input-base.abstract';
 import { BusErrorEventBase } from './bus-error-event-base.abstract';
 import { BusEventBase } from './bus-event-base.abstract';
@@ -12,16 +12,25 @@ export class EventBus {
 
   public catchEvents<T>(predicate?: CatchPredicate<BusEventBase<T>>): Observable<BusEventBase<T>> {
     if (isNil(predicate) || typeof predicate !== 'function') {
-      return this.currentEvent$;
+      return this.currentEvent$.pipe(observeOn(asyncScheduler), subscribeOn(asyncScheduler));
     }
-    return this.currentEvent$.pipe(filter((event: BusEventBase) => predicate(event)));
+
+    return this.currentEvent$.pipe(
+      observeOn(asyncScheduler),
+      subscribeOn(asyncScheduler),
+      filter((event: BusEventBase) => predicate(event))
+    );
   }
 
   public catchErrors<T>(predicate?: CatchPredicate<BusErrorEventBase<T>>): Observable<BusErrorEventBase<T>> {
     if (isNil(predicate) || typeof predicate !== 'function') {
-      return this.currentError$;
+      return this.currentError$.pipe(observeOn(asyncScheduler), subscribeOn(asyncScheduler));
     }
-    return this.currentError$.pipe(filter((event: BusErrorEventBase) => predicate(event)));
+    return this.currentError$.pipe(
+      observeOn(asyncScheduler),
+      subscribeOn(asyncScheduler),
+      filter((event: BusErrorEventBase) => predicate(event))
+    );
   }
 
   public catchAll<T>(): Observable<DispatchInputBase<T>>;
