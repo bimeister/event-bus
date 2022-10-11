@@ -53,5 +53,8 @@
     "packages/rxjs-operators",
     "packages/testing",
     "packages/utilities"
-  ]
+  ],
+  "dependencies": {
+    "@bimeister/utilities": "0.2.0-db028c77-dev"
+  }
 }

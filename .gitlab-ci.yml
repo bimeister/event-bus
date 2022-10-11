@@ -31,7 +31,7 @@ Dependencies:
     paths:
       - ./
 
-Static files:
+Static Files:
   stage: build
   needs: ['Dependencies']
   dependencies:
@@ -85,9 +85,9 @@ Code Style:
 
 NPM (dev):
   stage: deploy
-  needs: ['Static files', 'Test', 'Code Style', 'Lint', 'Spell Check']
+  needs: ['Static Files']
   dependencies:
-    - 'Static files'
+    - 'Static Files'
   interruptible: false
   allow_failure: true
   variables:
@@ -101,14 +101,15 @@ NPM (dev):
       --registry="https://git.bimeister.com/api/v4/projects/98/packages/npm/" --remove_scoped_registries="true"
     - cp ./.npmrc ./.npmignore --target-directory ./dist/ && cp ./package.json ./LICENSE.md --target-directory ./dist/
     - node ./node_modules/@bimeister/build-cli/executable.js npm-package package-json-prepare
-      --package_json_path="./dist/package.json" --commit_hash="${GIT_COMMIT_HASH}" --sideEffects="false"
+      --package_json_path="./dist/package.json" --commit_hash="${GIT_COMMIT_HASH}-dev" --sideEffects="false"
+      --type="module"
     - npm publish ./dist/ --tag="${TAG}" --access="public"
 
 NPM (stable):
   stage: deploy
-  needs: ['Static files', 'Test', 'Code Style', 'Lint', 'Spell Check']
+  needs: ['Static Files', 'Test', 'Code Style', 'Lint', 'Spell Check']
   dependencies:
-    - 'Static files'
+    - 'Static Files'
   interruptible: false
   allow_failure: true
   variables:
@@ -122,5 +123,5 @@ NPM (stable):
       --registry="https://git.bimeister.com/api/v4/projects/98/packages/npm/" --remove_scoped_registries="true"
     - cp ./.npmrc ./.npmignore --target-directory ./dist/ && cp ./package.json ./LICENSE.md --target-directory ./dist/
     - node ./node_modules/@bimeister/build-cli/executable.js npm-package package-json-prepare
-      --package_json_path="./dist/package.json" --commit_hash="${GIT_COMMIT_HASH}" --sideEffects="false"
+      --package_json_path="./dist/package.json" --commit_hash="${GIT_COMMIT_HASH}" --sideEffects="false" --type="module"
     - npm publish ./dist/ --tag="${TAG}" --access="public"
