@@ -1,5 +1,5 @@
+import { EventBus as NativeEventBus } from 'packages/event-bus-native';
 import { EventCallback, isOptionsNative, Listener, Options, PayloadType, WrappedEvent } from 'packages/internal';
-import { EventBus as NativeEventBus } from 'packages/native';
 import { Observable, Subscriber, TeardownLogic } from 'rxjs';
 
 export class EventBus {

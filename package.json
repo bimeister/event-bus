@@ -16,17 +16,17 @@
     "cspell:check": "cspell ./packages/**/* --config cspell.json"
   },
   "optionalDependencies": {
-    "rxjs": "^6.6.0"
+    "rxjs": "^6.0.0"
   },
   "devDependencies": {
     "@bimeister/build-cli": "0.1.0-c869ab81",
-    "@types/jest": "~27.0.0",
-    "@types/node": "~16.0.0",
+    "@types/jest": "^27.0.0",
+    "@types/node": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "4.28.2",
     "@typescript-eslint/parser": "4.28.2",
-    "barrelsby": "^2.2.0",
-    "cspell": "~5.0.0",
-    "cspell-dict-russian": "~1.2.0",
+    "barrelsby": "^2.0.0",
+    "cspell": "^5.0.0",
+    "cspell-dict-russian": "^1.2.0",
     "dts-bundle-generator": "^6.2.0",
     "esbuild": "~0.14.0",
     "eslint": "^7.26.0",
@@ -38,18 +38,18 @@
     "eslint-plugin-jsdoc": "latest",
     "eslint-plugin-prefer-arrow": "latest",
     "eslint-plugin-prettier": "^4.0.0",
-    "jest": "~27.0.0",
-    "jest-junit": "~13.0.0",
-    "prettier": "~2.5.0",
-    "ts-jest": "~27.0.0",
-    "ts-node": "~10.0.0",
-    "tslib": "~2.3.0",
-    "typescript": "~4.0.0"
+    "jest": "^27.0.0",
+    "jest-junit": "^13.0.0",
+    "prettier": "^2.5.0",
+    "ts-jest": "^27.0.0",
+    "ts-node": "^10.0.0",
+    "tslib": "^2.3.0",
+    "typescript": "^4.0.0"
   },
   "workspaces": [
+    "packages/event-bus-native",
+    "packages/event-bus-rxjs",
     "packages/internal",
-    "packages/native",
-    "packages/rxjs",
     "packages/rxjs-operators",
     "packages/testing",
     "packages/utilities"

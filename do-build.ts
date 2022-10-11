@@ -27,17 +27,18 @@ function buildTypings(options: { inputPath: string; outputPath: string }): Promi
     }
   );
 
-  const fileWriteOperation: Promise<void> = typings.then((result: string[]) => {
-    return new Promise<void>((resolve: (payload: void) => void, reject: (reason: unknown) => void) => {
-      writeFile(options.outputPath, result.join(), (error: unknown | null) => {
-        if (error === null) {
-          resolve();
-        }
+  const fileWriteOperation: Promise<void> = typings.then(
+    (result: string[]) =>
+      new Promise<void>((resolve: (payload: void) => void, reject: (reason: unknown) => void) => {
+        writeFile(options.outputPath, result.join(), (error: unknown | null) => {
+          if (error === null) {
+            resolve();
+          }
 
-        reject(error);
-      });
-    });
-  });
+          reject(error);
+        });
+      })
+  );
 
   return fileWriteOperation;
 }
@@ -56,13 +57,13 @@ const baseBuildConfig: Partial<BuildOptions> = {
 
 const buildNativeLibrary: Promise<BuildResult> = build({
   ...baseBuildConfig,
-  entryPoints: ['./packages/native/index.ts'],
+  entryPoints: ['./packages/event-bus-native/index.ts'],
   outfile: './dist/index.js'
 });
 
 const buildRxJsLibrary: Promise<BuildResult> = build({
   ...baseBuildConfig,
-  entryPoints: ['./packages/rxjs/index.ts'],
+  entryPoints: ['./packages/event-bus-rxjs/index.ts'],
   outfile: './dist/rxjs/index.js'
 });
 
@@ -76,14 +77,14 @@ Promise.resolve()
   .then(() => buildNativeLibrary)
   .then(() =>
     buildTypings({
-      inputPath: './packages/native/index.ts',
+      inputPath: './packages/event-bus-native/index.ts',
       outputPath: './dist/index.d.ts'
     })
   )
   .then(() => buildRxJsLibrary)
   .then(() =>
     buildTypings({
-      inputPath: './packages/rxjs/index.ts',
+      inputPath: './packages/event-bus-rxjs/index.ts',
       outputPath: './dist/rxjs/index.d.ts'
     })
   )
