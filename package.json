@@ -28,8 +28,8 @@
     "rxjs": "^6.6.0"
   },
   "devDependencies": {
-    "@bimeister/build-cli": "^0.1.0-b916fe5b",
-    "@bimeister/utilities": "^0.1.0-24d2e33e",
+    "@bimeister/build-cli": "0.1.0-c869ab81",
+    "@bimeister/utilities": "0.1.0-fe13e1f0",
     "@types/gulp": "^4.0.8",
     "@types/jest": "^26.0.23",
     "@types/node": "^14.0.23",
