@@ -5,7 +5,7 @@
   "description": "BIMeister frontend event-bus",
   "scripts": {
     "build-cli": "build-cli",
-    "barrel": "barrelsby --config=\"./barrelsby.json\" --directory=\"./src/lib\"",
+    "barrel": "npm run barrel --workspaces",
     "compile:lib-esm2015": "tsc --project tsconfig.lib-esm2015.json",
     "compile:lib-umd": "tsc --project tsconfig.lib-umd.json",
     "compile:lib-typings": "tsc --project tsconfig.lib-typings.json",
@@ -16,9 +16,8 @@
     "lint:debug": "tslint --format prose --project tsconfig.json --fix",
     "lint:inspect": "tslint --format stylish --project tsconfig.json && yarn run cspell:check",
     "lint:codestyle": "yarn run prettier:check",
-    "test": "yarn run test:watch",
-    "test:watch": "jest --config ./jest.config.ts --watch true",
-    "test:ci": "jest --config ./jest.config.ts --clearCache && jest --config ./jest.config.ts --coverage true",
+    "test:each": "npm run test --workspaces",
+    "test:all": "jest --config ./packages/jest.config.ts --passWithNoTests",
     "prettier:check": "prettier --config ./.prettierrc --ignore-path ./.prettierignore --check \"./**/*.{json,js,ts}\"",
     "prettier:format": "prettier --loglevel log --config ./.prettierrc --ignore-path ./.prettierignore --write \"./**/*.{json,js,ts}\"",
     "cspell:check": "cspell \"src/**/*.*\" --config=\"cspell.json\""
@@ -27,30 +26,30 @@
     "@bimeister/utilities": "^0.1.0"
   },
   "devDependencies": {
-    "rxjs": "7.4.0",
     "@bimeister/build-cli": "0.1.0-c869ab81",
     "@bimeister/utilities": "0.1.0-72c6467b",
     "@types/gulp": "^4.0.8",
-    "@types/jest": "^26.0.23",
-    "@types/node": "^14.0.23",
+    "@types/jest": "~27.0.0",
+    "@types/node": "~16.0.0",
     "barrelsby": "^2.2.0",
     "cspell": "^5.4.1",
     "cspell-dict-russian": "^1.2.1",
-    "gulp": "^4.0.2",
-    "jest": "^26.1.0",
-    "jest-junit": "^12.0.0",
+    "gulp": "^3.9.1",
+    "jest": "~27.0.0",
+    "jest-junit": "~13.0.0",
     "prettier": "^2.3.0",
-    "ts-jest": "^26.5.6",
-    "ts-node": "^10.0.0",
+    "rxjs": "^6.6.0",
+    "ts-jest": "~27.0.0",
+    "ts-node": "~10.0.0",
     "tslint": "^6.1.2",
-    "typescript": "^4.2.4"
+    "typescript": "~4.0.0"
   },
   "browser": {
     "fs": false,
     "path": false
   },
   "workspaces": [
-    "packages/common",
+    "packages/internal",
     "packages/native",
     "packages/rxjs",
     "packages/testing"

@@ -1,4 +1,4 @@
-import type { RecipientCallback, WrappedEvent } from 'packages/common';
+import type { RecipientCallback, WrappedEvent } from 'packages/internal';
 
 /**
  * @internal

@@ -1,15 +1,15 @@
 import {
   applyRecipientCallbackKey,
   EventCallback,
+  EventStream,
   isNativeDataCallback,
   isNativeInputPayload,
+  Listener,
   Options,
   PayloadType,
   RecipientCallback,
   WrappedEvent
-} from 'packages/common';
-import { EventStream } from './event-stream.class';
-import { Listener } from './listener.class';
+} from 'packages/internal';
 
 export class EventBus {
   private readonly eventStream: EventStream = new EventStream();

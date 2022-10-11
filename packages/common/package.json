@@ -1,6 +1,0 @@
-{
-  "private": true,
-  "scripts": {
-    "barrel": "barrelsby --config=\"./../../barrelsby.json\" --directory=\"./src\""
-  }
-}
