@@ -1,5 +1,9 @@
 import { Lineage } from './lineage.class';
 
+/**
+ * @description
+ * WrappedEvent provides functionality to link dispatched data with each other.
+ */
 export class WrappedEvent<T = unknown> {
   public readonly lineage: Lineage = new Lineage();
 
@@ -21,6 +25,9 @@ export class WrappedEvent<T = unknown> {
     return targetEvent.lineage.getAllDescendants().includes(this.lineage);
   }
 
+  /**
+   * @returns new WrappedEvent with payload provided
+   */
   public createChild<K>(payload: K): WrappedEvent<K> {
     const child: WrappedEvent<K> = new WrappedEvent(payload);
     this.setChild(child);

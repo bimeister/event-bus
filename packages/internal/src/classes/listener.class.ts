@@ -4,8 +4,6 @@ import type { RecipientCallback } from '../types/recipient-callback.type';
 import type { EventStream } from './event-stream.class';
 
 /**
- * @internal
- *
  * @description
  * Is used for subscription management
  */

@@ -6,6 +6,7 @@
   "scripts": {
     "barrel": "npm run barrel --workspaces",
     "build": "ts-node ./do-build.ts",
+    "build:docs": "typedoc --options typedoc.json",
     "lint": "eslint --config ./.eslintrc ./packages/**/src/**/*.ts",
     "lint:fix": "eslint --config ./.eslintrc ./packages/**/src/**/*.ts --fix",
     "test": "jest --clearCache && jest --config ./packages/jest.config.ts --passWithNoTests --coverage true",
@@ -13,7 +14,6 @@
     "prettier:check": "prettier --config ./.prettierrc --ignore-path ./.prettierignore --check ./**/*.{json,js,ts}",
     "prettier:format": "prettier --loglevel log --config ./.prettierrc --ignore-path ./.prettierignore --write ./**/*.{json,js,ts}",
     "autofix": "npm run lint:fix && npm run prettier:format",
-    "docs": "typedoc --options typedoc.json",
     "cspell:check": "cspell ./packages/**/* --config cspell.json"
   },
   "devDependencies": {

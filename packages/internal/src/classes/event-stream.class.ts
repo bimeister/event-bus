@@ -2,7 +2,8 @@ import type { RecipientCallback } from '../types/recipient-callback.type';
 import type { WrappedEvent } from './wrapped-event.class';
 
 /**
- * @internal
+ * @description
+ * Provides emit / subscribe / unsubscribe functionality.
  */
 export class EventStream {
   private readonly recipients: Set<RecipientCallback> = new Set<RecipientCallback>();

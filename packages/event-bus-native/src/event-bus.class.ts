@@ -11,6 +11,11 @@ import {
   WrappedEvent
 } from '@bimeister/event-bus.internal';
 
+/**
+ * @description
+ * Data dispatch / listen provider written in pure JavaScript (TypeScript).
+ * Each EventBus is isolated from others. — Multiple EvenBus instances could be used in single application.
+ */
 export class EventBus {
   private readonly eventStream: EventStream = new EventStream();
 

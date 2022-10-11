@@ -31,6 +31,7 @@ const baseConfig: Config.InitialOptions = {
       statements: 100
     }
   },
+  bail: false,
   clearMocks: true,
   verbose: true,
   rootDir: './',
