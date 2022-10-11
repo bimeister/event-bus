@@ -5,7 +5,7 @@ export function compileTypings(): TaskFunction {
   const tsConfigSuffix: string = 'typings';
   const command: string = `tsc --project tsconfig.lib-${tsConfigSuffix}.json`;
 
-  return (onDone: VoidFunction): void => {
+  return (onDone: Function): void => {
     executeCommandWithLogging(command, {
       onDone,
       printDefaultOutput: true
