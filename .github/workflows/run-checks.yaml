@@ -8,10 +8,6 @@ on:
     branches:
       - $default-branch
 
-env:
-  GIT_COMMIT_HASH: ${{github.sha}}
-  AUTH_TOKEN: ${{GITHUB_TOKEN}}
-
 jobs:
   install_dependencies:
     name: Install Dependencies
@@ -21,19 +17,20 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.15.1
+          node-version: 18
           cache: 'npm'
+
       - name: Install dependencies by lockfile
         run: npm clean-install
+
       - name: Generate Public API
         run: npm run barrel
-      - name: Pack prepared workspace to archive
-        run: tar --totals --create --file workspace.tar ./
+
       - name: Share prepared workspace with other jobs
-        uses: actions/upload-artifact@v3
+        uses: actions/cache@v3
         with:
-          name: workspace
-          path: workspace.tar
+          key: "workspace:${{github.sha}}"
+          path: ./
 
   static_files:
     name: Build Static Files
@@ -41,20 +38,13 @@ jobs:
     needs: [ install_dependencies ]
     steps:
       - name: Download prepared workspace
-        uses: actions/download-artifact@v3
+        uses: actions/cache@v3
         with:
-          name: workspace
-      - name: Restore workspace from archive
-        run: tar --totals --extract --file workspace.tar && rm --force workspace.tar
+          key: "workspace:${{github.sha}}"
+          path: ./
+     
       - name: Build static files
         run: npm run build
-      - name: Pack static files to archive
-        run: tar --totals --create --file dist.tar ./dist
-      - name: Share prepared workspace with other jobs
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist
-          path: dist.tar
 
   run_lint:
     name: Lint
@@ -62,11 +52,11 @@ jobs:
     needs: [ install_dependencies ]
     steps:
       - name: Download prepared workspace
-        uses: actions/download-artifact@v3
+        uses: actions/cache@v3
         with:
-          name: workspace
-      - name: Restore workspace from archive
-        run: tar --totals --extract --file workspace.tar && rm --force workspace.tar
+          key: "workspace:${{github.sha}}"
+          path: ./
+      
       - name: Lint sources
         run: npm run lint
 
@@ -76,11 +66,11 @@ jobs:
     needs: [ install_dependencies ]
     steps:
       - name: Download prepared workspace
-        uses: actions/download-artifact@v3
+        uses: actions/cache@v3
         with:
-          name: workspace
-      - name: Restore workspace from archive
-        run: tar --totals --extract --file workspace.tar && rm --force workspace.tar
+          key: "workspace:${{github.sha}}"
+          path: ./
+      
       - name: Check spelling in sources
         run: npm run cspell:check
 
@@ -90,10 +80,10 @@ jobs:
     needs: [ install_dependencies ]
     steps:
       - name: Download prepared workspace
-        uses: actions/download-artifact@v3
+        uses: actions/cache@v3
         with:
-          name: workspace
-      - name: Restore workspace from archive
-        run: tar --totals --extract --file workspace.tar && rm --force workspace.tar
+          key: "workspace:${{github.sha}}"
+          path: ./
+      
       - name: Check codestyle
         run: npm run prettier:check

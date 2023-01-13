@@ -1,31 +1,36 @@
 {
   "name": "@bimeister/event-bus",
-  "version": "0.2.0",
-  "license": "SEE LICENSE IN LICENSE.md",
-  "description": "BIMeister frontend event-bus",
+  "version": "#.#.#",
+  "license": "Apache-2.0",
+  "description": "Bimeister frontend event-bus",
+  "keywords": [
+    "event-bus",
+    "library",
+    "rxjs",
+    "native"
+  ],
   "scripts": {
     "barrel": "npm run barrel --workspaces",
     "build": "ts-node ./do-build.ts",
-    "prepublish": "ts-node do-prepublish.ts",
+    "build:prepublish": "ts-node do-prepublish.ts",
     "build:docs": "typedoc --options typedoc.json",
     "lint": "eslint --config ./.eslintrc ./packages/**/src/**/*.ts",
     "lint:fix": "eslint --config ./.eslintrc ./packages/**/src/**/*.ts --fix",
     "test": "jest --clearCache && jest --config ./packages/jest.config.ts --passWithNoTests --coverage true",
     "test:ci": "jest --clearCache && jest --config ./packages/jest.config-pipeline.ts --passWithNoTests --coverage true --ci",
-    "prettier:check": "prettier --config ./.prettierrc --ignore-path ./.prettierignore --check ./**/*.{json,js,ts}",
-    "prettier:format": "prettier --loglevel log --config ./.prettierrc --ignore-path ./.prettierignore --write ./**/*.{json,js,ts}",
+    "prettier:check": "prettier --config ./.prettierrc --ignore-path ./.prettierignore --check ./packages/**/*.{json,js,ts}",
+    "prettier:format": "prettier --loglevel log --config ./.prettierrc --ignore-path ./.prettierignore --write ./packages/**/*.{json,js,ts}",
     "autofix": "npm run lint:fix && npm run prettier:format",
-    "cspell:check": "cspell ./packages/**/* --config cspell.json"
+    "cspell:check": "cspell lint './packages/**/*.*' --config cspell.json"
   },
   "devDependencies": {
-    "@bimeister/utilities": "0.2.0-920ed7f3-dev",
+    "@bimeister/utilities": "1.0.0",
     "@types/jest": "^27.0.0",
     "@types/node": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
     "barrelsby": "^2.0.0",
     "cspell": "^5.0.0",
-    "cspell-dict-russian": "^1.2.0",
     "dts-bundle-generator": "^6.2.0",
     "esbuild": "~0.14.0",
     "eslint": "latest",
@@ -50,7 +55,6 @@
     "packages/event-bus-native",
     "packages/event-bus-rxjs",
     "packages/internal",
-    "packages/rxjs-operators",
-    "packages/utilities"
+    "packages/rxjs-operators"
   ]
 }

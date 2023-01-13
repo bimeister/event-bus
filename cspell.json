@@ -1,9 +1,15 @@
 {
   "version": "0.2",
   "language": "en",
-  "words": ["BIMeister", "barrelsby", "outdir"],
   "ignoreRegExpList": ["CStyleComment"],
   "ignorePaths": ["**/node_modules/**", "**/dist/**"],
-  "dictionaries": ["en_us", "en-gb", "russian", "typescript", "node", "bash", "softwareTerms"],
-  "import": ["./node_modules/cspell-dict-russian/cspell-ext.json"]
+  "dictionaries": ["en_us", "en-gb", "typescript", "node", "bash", "softwareTerms", "localTerms"],
+  "dictionaryDefinitions": [
+    {
+      "name": "localTerms",
+      "description": "Bimeister utilities local terms",
+      "path": "./cspell.local-terms.txt"
+    }
+  ],
+  "words": ["barrelsby"]
 }
