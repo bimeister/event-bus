@@ -10,7 +10,7 @@
 
 - Multiple instances of EventBus may be created
 - Format of dispatched payload is not limited
-- Relations between dispatched data is managed by EventBus
+- Relations between dispatched data are managed by EventBus
 
 ## Usage
 
