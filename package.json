@@ -9,6 +9,15 @@
     "rxjs",
     "native"
   ],
+  "homepage": "https://github.com/bimeister/event-bus",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bimeister/event-bus"
+  },
+  "bugs": {
+    "url": "https://github.com/bimeister/event-bus/issues",
+    "email": "opensource@bimeister.com"
+  },
   "scripts": {
     "barrel": "npm run barrel --workspaces",
     "build": "ts-node ./do-build.ts",

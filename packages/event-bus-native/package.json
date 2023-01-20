@@ -2,6 +2,16 @@
   "name": "@bimeister/event-bus.native",
   "private": true,
   "version": "local",
+  "homepage": "https://github.com/bimeister/event-bus",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bimeister/event-bus",
+    "directory": "packages/event-bus-native"
+  },
+  "bugs": {
+    "url": "https://github.com/bimeister/event-bus/issues",
+    "email": "opensource@bimeister.com"
+  },
   "scripts": {
     "barrel": "barrelsby --config ./../barrelsby.json --directory ./src",
     "test": "jest --config ./../jest.config.ts --passWithNoTests --selectProjects native"
