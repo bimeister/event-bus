@@ -33,7 +33,7 @@
     "cspell:check": "cspell lint './packages/**/*.*' --config cspell.json"
   },
   "devDependencies": {
-    "@bimeister/utilities": "1.0.0",
+    "@bimeister/utilities": "^1.2.0",
     "@types/jest": "^27.0.0",
     "@types/node": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "latest",
