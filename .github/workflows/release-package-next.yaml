@@ -26,7 +26,7 @@ jobs:
         run: npm run barrel
 
       - name: Share prepared workspace with other jobs
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: "workspace:${{github.sha}}"
           path: ./
@@ -37,7 +37,7 @@ jobs:
     needs: [ install_dependencies ]
     steps:
       - name: Download prepared workspace
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: "workspace:${{github.sha}}"
           path: ./
@@ -46,7 +46,7 @@ jobs:
         run: npm run build
 
       - name: Share prepared dist with other jobs
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: "dist:${{github.sha}}"
           path: ./dist
@@ -57,13 +57,13 @@ jobs:
     needs: [ static_files ]
     steps:
       - name: Download prepared workspace
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: "workspace:${{github.sha}}"
           path: ./
 
       - name: Download prepared dist
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: "dist:${{github.sha}}"
           path: ./dist
