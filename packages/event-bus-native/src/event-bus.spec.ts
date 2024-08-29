@@ -63,7 +63,7 @@ describe('event-bus.class.ts', () => {
       .map((inputItem: number) => new WrappedEvent(inputItem))
       .forEach((wrappedInputItem: WrappedEvent<number>) =>
         eventBus.dispatch(wrappedInputItem, {
-          payloadType: PayloadType.Wrapped
+          payloadType: PayloadType.Wrapped,
         })
       );
   });
@@ -80,7 +80,7 @@ describe('event-bus.class.ts', () => {
         doneCallback();
       },
       {
-        payloadType: PayloadType.Wrapped
+        payloadType: PayloadType.Wrapped,
       }
     );
 
@@ -98,7 +98,7 @@ describe('event-bus.class.ts', () => {
         doneCallback();
       },
       {
-        payloadType: PayloadType.Native
+        payloadType: PayloadType.Native,
       }
     );
 

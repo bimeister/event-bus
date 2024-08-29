@@ -34,7 +34,7 @@ describe('event-stream.class.ts', () => {
       (value: string, index: number) =>
         new WrappedEvent<PayloadMock>({
           index,
-          value
+          value,
         })
     );
   });

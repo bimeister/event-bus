@@ -6,7 +6,7 @@ import {
   PackageJson,
   PackageJsonExports,
   PackageJsonExportsItem,
-  SourceFileData
+  SourceFileData,
 } from '@bimeister/utilities/build';
 import { getAllNestedFilePaths } from '@bimeister/utilities/filesystem';
 import { build, BuildOptions } from 'esbuild';
@@ -32,7 +32,7 @@ const esBuildConfig: BuildOptions = {
   mainFields: ['module', 'main', 'browser'],
   color: true,
   metafile: true,
-  legalComments: 'none'
+  legalComments: 'none',
 };
 const notBundledPackages: Set<string> = new Set<string>(['internal', 'testing']);
 
@@ -42,7 +42,7 @@ const typeOnlyFileEndings: Set<string> = new Set<string>(
 
 const outDirByPackageName: Map<string, string> = new Map<string, string>([
   ['event-bus-native', 'native'],
-  ['event-bus-rxjs', 'rxjs']
+  ['event-bus-rxjs', 'rxjs'],
 ]);
 
 getAllNestedFilePaths(packagesFolderPath).then((sourceFilePaths: string[]) => {
@@ -80,21 +80,21 @@ async function generateBundle(sourceFilesDataByPackageName: Map<string, SourceFi
     const buildConfig: BuildOptions = {
       ...esBuildConfig,
       outdir,
-      entryPoints
+      entryPoints,
     };
 
     const commonJsConfig: BuildOptions = {
       ...buildConfig,
       splitting: false,
       format: 'cjs',
-      outExtension: { '.js': '.cjs' }
+      outExtension: { '.js': '.cjs' },
     };
 
     const esModuleConfig: BuildOptions = {
       ...buildConfig,
       splitting: true,
       format: 'esm',
-      outExtension: { '.js': '.mjs' }
+      outExtension: { '.js': '.mjs' },
     };
 
     await build(commonJsConfig);
@@ -118,7 +118,7 @@ async function generateTypings(sourceFilesDataByPackageName: Map<string, SourceF
     await buildBundleTypings({
       configPath: tsConfigFilePath,
       inputPath: mainFilePath,
-      outputPath: bundleTypingsFilePath
+      outputPath: bundleTypingsFilePath,
     });
 
     if (packageName === 'rxjs-operators') {
@@ -205,7 +205,7 @@ async function generatePackageJson(
         es2020: `${filePathWithoutExtension}.mjs`,
         main: `${filePathWithoutExtension}.cjs`,
         typings: `${filePathWithoutExtension}.d.ts`,
-        default: `${filePathWithoutExtension}.cjs`
+        default: `${filePathWithoutExtension}.cjs`,
       };
 
       if (packageName === 'event-bus-native') {
@@ -223,9 +223,9 @@ async function generatePackageJson(
     [
       './package.json',
       {
-        default: './package.json'
-      }
-    ]
+        default: './package.json',
+      },
+    ],
   ];
   const exports: PackageJsonExports = Object.fromEntries(topLevelExports.concat(exportsEntries));
 
@@ -243,7 +243,7 @@ async function generatePackageJson(
       typings: rootTypesFilePath,
       module: rootEsmFilePath,
       es2020: rootEsmFilePath,
-      main: rootCommonJsFilePath
-    }
+      main: rootCommonJsFilePath,
+    },
   });
 }

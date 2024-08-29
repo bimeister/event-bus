@@ -14,7 +14,7 @@ describe('event-bus.class.ts', () => {
   it('should return observable of same option on dispatch', (doneCallback: jest.DoneCallback) => {
     const nativeDispatcher$: Observable<unknown> = eventBus.dispatch(null, { payloadType: PayloadType.Native });
     const wrappedDispatcher$: Observable<WrappedEvent<unknown>> = eventBus.dispatch(new WrappedEvent(null), {
-      payloadType: PayloadType.Wrapped
+      payloadType: PayloadType.Wrapped,
     });
 
     combineLatest([nativeDispatcher$, wrappedDispatcher$])

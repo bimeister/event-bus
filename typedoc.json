@@ -6,10 +6,10 @@
     "./packages/internal/src/index.ts",
     "./packages/rxjs-operators/src/index.ts"
   ],
-  "entryPointStrategy": "Resolve",
+  "entryPointStrategy": "resolve",
   "out": "./docs-dist",
   "tsconfig": "./tsconfig.json",
-  "exclude": "**/**.spec.ts",
+  "exclude": ["**/**.spec.ts"],
   "excludeInternal": false,
   "excludePrivate": false,
   "excludeProtected": false,

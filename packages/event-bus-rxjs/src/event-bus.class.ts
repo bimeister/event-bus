@@ -5,7 +5,7 @@ import {
   Listener,
   Options,
   PayloadType,
-  WrappedEvent
+  WrappedEvent,
 } from '@bimeister/event-bus.internal';
 import { EventBus as NativeEventBus } from '@bimeister/event-bus.native';
 import { Observable, Subscriber, TeardownLogic } from 'rxjs';
@@ -18,7 +18,7 @@ export class EventBus {
   public dispatch<T>(
     input: T | WrappedEvent<T>,
     options: Options.Unified = {
-      payloadType: PayloadType.Native
+      payloadType: PayloadType.Native,
     }
   ): Observable<WrappedEvent<unknown> | unknown> {
     if (isOptionsNative(options)) {
@@ -40,7 +40,7 @@ export class EventBus {
   public listen(options: Options.Wrapped): Observable<WrappedEvent<unknown>>;
   public listen(
     options: Options.Unified = {
-      payloadType: PayloadType.Native
+      payloadType: PayloadType.Native,
     }
   ): Observable<WrappedEvent<unknown> | unknown> {
     if (isOptionsNative(options)) {
