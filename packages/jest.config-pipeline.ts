@@ -10,9 +10,9 @@ const pipelineConfig: Config.InitialOptions = {
       'jest-junit',
       {
         outputDirectory: '<rootDir>/../coverage',
-        suiteName: 'Unit Tests'
-      }
-    ]
-  ]
+        suiteName: 'Unit Tests',
+      },
+    ],
+  ],
 };
 export default pipelineConfig;

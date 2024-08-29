@@ -3,6 +3,6 @@ import baseConfig from './jest.config-base';
 
 const config: Config.InitialOptions = {
   ...baseConfig,
-  collectCoverage: false
+  collectCoverage: false,
 };
 export default config;

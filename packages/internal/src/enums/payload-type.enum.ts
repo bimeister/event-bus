@@ -1,4 +1,4 @@
 export const enum PayloadType {
   Native = 'native',
-  Wrapped = 'wrapped'
+  Wrapped = 'wrapped',
 }

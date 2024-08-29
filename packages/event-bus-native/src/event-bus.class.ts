@@ -8,7 +8,7 @@ import {
   Options,
   PayloadType,
   RecipientCallback,
-  WrappedEvent
+  WrappedEvent,
 } from '@bimeister/event-bus.internal';
 
 /**
@@ -24,7 +24,7 @@ export class EventBus {
   public dispatch<T>(
     input: T | WrappedEvent<T>,
     options: Options.Unified = {
-      payloadType: PayloadType.Native
+      payloadType: PayloadType.Native,
     }
   ): void {
     if (!isNativeInputPayload(input, options)) {
@@ -41,7 +41,7 @@ export class EventBus {
   public listen(
     callback: EventCallback.Unified,
     options: Options.Unified = {
-      payloadType: PayloadType.Native
+      payloadType: PayloadType.Native,
     }
   ): Listener {
     const listener: Listener = new Listener(this.eventStream);
