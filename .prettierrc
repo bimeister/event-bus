@@ -1,4 +1,5 @@
 {
+  "$schema": "https://www.schemastore.org/prettierrc.json",
   "tabWidth": 2,
   "useTabs": false,
   "semi": true,
@@ -21,17 +22,8 @@
   "overrides": [
     {
       "files": "*.html",
-      "options": {
-        "parser": "angular",
-        "htmlWhitespaceSensitivity": "ignore",
-        "proseWrap": "never"
-      }
+      "options": { "parser": "angular", "htmlWhitespaceSensitivity": "ignore", "proseWrap": "never" }
     },
-    {
-      "files": ["tsconfig.*", ".eslintrc"],
-      "options": {
-        "trailingComma": "none"
-      }
-    }
+    { "files": ["tsconfig.*"], "options": { "trailingComma": "none" } }
   ]
 }
