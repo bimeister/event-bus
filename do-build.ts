@@ -77,11 +77,7 @@ async function generateBundle(sourceFilesDataByPackageName: Map<string, SourceFi
     const outdir: string = outDirByPackageName.has(packageName)
       ? `${distFolderPath}/${outDirByPackageName.get(packageName)}/`
       : `${distFolderPath}/${packageName}/`;
-    const buildConfig: BuildOptions = {
-      ...esBuildConfig,
-      outdir,
-      entryPoints,
-    };
+    const buildConfig: BuildOptions = { ...esBuildConfig, outdir, entryPoints };
 
     const commonJsConfig: BuildOptions = {
       ...buildConfig,
@@ -204,7 +200,7 @@ async function generatePackageJson(
         module: `${filePathWithoutExtension}.mjs`,
         es2020: `${filePathWithoutExtension}.mjs`,
         main: `${filePathWithoutExtension}.cjs`,
-        typings: `${filePathWithoutExtension}.d.ts`,
+        types: `${filePathWithoutExtension}.d.ts`,
         default: `${filePathWithoutExtension}.cjs`,
       };
 
@@ -219,14 +215,7 @@ async function generatePackageJson(
   const rootTypesFilePath: string = `./native/index.d.ts`;
   const rootEsmFilePath: string = `./native/index.mjs`;
   const rootCommonJsFilePath: string = `./native/index.cjs`;
-  const topLevelExports: [string, PackageJsonExportsItem][] = [
-    [
-      './package.json',
-      {
-        default: './package.json',
-      },
-    ],
-  ];
+  const topLevelExports: [string, PackageJsonExportsItem][] = [['./package.json', { default: './package.json' }]];
   const exports: PackageJsonExports = Object.fromEntries(topLevelExports.concat(exportsEntries));
 
   await buildPackageJson({
@@ -240,7 +229,7 @@ async function generatePackageJson(
       fesm2020: rootEsmFilePath,
       fesm2015: rootEsmFilePath,
       esm2020: rootEsmFilePath,
-      typings: rootTypesFilePath,
+      types: rootTypesFilePath,
       module: rootEsmFilePath,
       es2020: rootEsmFilePath,
       main: rootCommonJsFilePath,
